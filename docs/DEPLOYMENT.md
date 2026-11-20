@@ -20,7 +20,7 @@ AI Service (apps/ai)            → Python FastAPI (Railway / Cloud Run)
 ### Environment Variables (Vercel → Settings → Environment Variables)
 ```bash
 NEXT_PUBLIC_API_URL=https://jonoshheba-api.vercel.app
-NEXT_PUBLIC_SITE_URL=https://web-big6.vercel.app
+NEXT_PUBLIC_SITE_URL=https://jonosheba.vercel.app
 ```
 
 ### Build Command
@@ -60,7 +60,7 @@ DATABASE_URL=postgresql://user:pass@host/jonoshheba?schema=public
 ADMIN_BOOTSTRAP_SECRET=<same 64-char secret as admin console>
 NODE_ENV=production
 JWT_SECRET=<64-char random>
-SITE_URL=https://web-big6.vercel.app
+SITE_URL=https://jonosheba.vercel.app
 ```
 
 ### Vercel Serverless Deployment

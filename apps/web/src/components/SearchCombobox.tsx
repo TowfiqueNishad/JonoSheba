@@ -301,14 +301,14 @@ export function SearchCombobox({
           className={
             isHeader
               ? 'min-h-[40px] w-full border border-[var(--hair)] bg-[var(--field)] px-3 text-xs text-[var(--text)] placeholder:text-[var(--text-muted)] focus:border-[var(--gold)]'
-              : 'min-h-[52px] flex-1 border border-[var(--hair)] bg-[var(--field)] px-4 text-sm text-[var(--hero-text)] placeholder:text-[var(--hero-muted)] backdrop-blur-md transition-all duration-[600ms] focus:border-[var(--gold)]'
+              : 'min-h-[46px] flex-1 border border-[var(--hair)] bg-[var(--field)] px-4 text-sm text-[var(--hero-text)] placeholder:text-[var(--hero-muted)] backdrop-blur-md transition-all duration-[600ms] focus:border-[var(--gold)] sm:min-h-[52px]'
           }
         />
         {!isHeader && (
           <button
             type="submit"
             disabled={!query.trim()}
-            className="nostos-btn-gold min-h-[52px] px-7 disabled:opacity-50"
+            className="nostos-btn-gold min-h-[46px] px-6 disabled:opacity-50 sm:min-h-[52px] sm:px-7"
           >
             {dict.home.searchButton}
           </button>

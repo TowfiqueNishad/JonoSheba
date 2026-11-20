@@ -200,16 +200,16 @@ export function AppHeader() {
       )}
 
       <header className="sticky top-0 z-40 border-b border-[var(--hair)] bg-[var(--panel)] backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-3 py-2.5 sm:px-5">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2 sm:gap-3 sm:px-5 sm:py-2.5">
           {/* Left: Solid #B3261E 999 Pill + NOSTOS Wordmark ("জনসেবা" wide Anek Bangla + "JONOSHHEBA" tracked 9px steel-blue) */}
-          <div className="flex shrink-0 items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <a
               href="tel:999"
-              className="nostos-emergency-999 inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-full bg-[#B3261E] px-3.5 text-xs font-bold tracking-wider text-white transition-transform duration-300 active:scale-[0.985]"
+              className="nostos-emergency-999 inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-full bg-[#B3261E] px-2.5 text-xs font-bold tracking-wider text-white transition-transform duration-300 active:scale-[0.985] sm:px-3.5"
               aria-label={dict.emergency.call999}
             >
               <svg
-                className="h-3.5 w-3.5"
+                className="h-3.5 w-3.5 shrink-0"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -218,15 +218,18 @@ export function AppHeader() {
               >
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.63 2.63a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.45-1.2a2 2 0 0 1 2.11-.45c.85.3 1.73.51 2.63.63A2 2 0 0 1 22 16.92z" />
               </svg>
-              <span>{dict.emergency.pill999}</span>
+              <span>
+                <span className="sm:hidden">{locale === 'bn' ? '৯৯৯' : '999'}</span>
+                <span className="hidden sm:inline">{dict.emergency.pill999}</span>
+              </span>
             </a>
 
             <Link
               href={localePath('/')}
               className="flex shrink-0 flex-col whitespace-nowrap leading-none text-[var(--text)]"
             >
-              <span className="nostos-display-h1 text-lg tracking-wide sm:text-xl">জনসেবা</span>
-              <span className="mt-0.5 font-overline text-[9px] font-semibold uppercase tracking-[0.42em] text-[var(--accent)]">
+              <span className="nostos-display-h1 text-base tracking-wide sm:text-xl">জনসেবা</span>
+              <span className="mt-0.5 font-overline text-[8px] font-semibold uppercase tracking-[0.34em] text-[var(--accent)] sm:text-[9px] sm:tracking-[0.42em]">
                 JONOSHHEBA
               </span>
             </Link>
@@ -344,7 +347,7 @@ export function AppHeader() {
               aria-expanded={drawerOpen}
               aria-label={dict.nav.menu}
               onClick={() => setDrawerOpen((v) => !v)}
-              className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center border border-[var(--hair)] text-xs font-semibold text-[var(--text)] xl:hidden"
+              className="inline-flex min-h-[44px] min-w-[40px] items-center justify-center border border-[var(--hair)] text-xs font-semibold text-[var(--text)] sm:min-w-[44px] xl:hidden"
             >
               {drawerOpen ? (
                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -432,7 +435,7 @@ export function MobileBottomNav() {
   return (
     <nav
       aria-label={locale === 'bn' ? 'নিচের নেভিগেশন' : 'Bottom navigation'}
-      className="fixed bottom-0 left-0 right-0 z-40 border-t border-[var(--hair)] bg-[var(--panel)] backdrop-blur-xl xl:hidden no-print"
+      className="fixed bottom-0 left-0 right-0 z-40 border-t border-[var(--hair)] bg-[var(--panel)] pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-xl xl:hidden no-print"
     >
       <div className="mx-auto grid max-w-lg grid-cols-5">
         {tabs.map((tab) => {
@@ -441,14 +444,14 @@ export function MobileBottomNav() {
             <Link
               key={tab.href}
               href={localePath(tab.href)}
-              className={`relative flex min-h-[52px] items-center justify-center text-xs font-medium tracking-wider transition-colors ${
+              className={`relative flex min-h-[50px] items-center justify-center text-[11px] font-medium tracking-wide transition-colors sm:min-h-[52px] sm:text-xs sm:tracking-wider ${
                 active ? 'text-[var(--gold)]' : 'text-[var(--text-muted)] hover:text-[var(--text)]'
               }`}
             >
               <span>{tab.label}</span>
               <span
                 aria-hidden="true"
-                className={`absolute bottom-0 left-3 right-3 h-[1.5px] bg-[var(--gold)] transition-transform duration-[700ms] ease-[cubic-bezier(.16,1,.3,1)] ${
+                className={`absolute bottom-0 left-2 right-2 h-[1.5px] bg-[var(--gold)] transition-transform duration-[700ms] ease-[cubic-bezier(.16,1,.3,1)] sm:left-3 sm:right-3 ${
                   active ? 'scale-x-100' : 'scale-x-0'
                 }`}
               />

@@ -270,11 +270,11 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="space-y-20 pb-12">
+    <div className="space-y-14 pb-28 sm:space-y-20 sm:pb-20 xl:pb-12">
       {/* ═══════════════════════════════════════════════════════════════════
        * HERO — FULL-BLEED NOSTOS FILM PLATE (860px desktop)
        * ═══════════════════════════════════════════════════════════════════ */}
-      <section className="nostos-film-plate relative flex min-h-[680px] flex-col justify-between overflow-hidden border-b border-[var(--hair)] lg:min-h-[860px]">
+      <section className="nostos-film-plate relative flex min-h-[520px] flex-col justify-between overflow-hidden border-b border-[var(--hair)] sm:min-h-[640px] lg:min-h-[820px]">
         {/* Top 14px letterbox bar */}
         <div aria-hidden="true" className="h-[14px] w-full bg-[#020304]" />
 
@@ -287,32 +287,32 @@ export default function HomePage() {
         </div>
 
         {/* Hero Centerpiece Scrim */}
-        <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-4 py-16 text-center sm:px-6">
+        <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-4 py-8 text-center sm:px-6 sm:py-14 lg:py-20">
           <p
             aria-label={
               locale === 'bn'
                 ? 'সকল সরকারি সেবা, এক ঠিকানায় (ALL PUBLIC SERVICES · ONE DESTINATION)'
                 : 'ALL PUBLIC SERVICES · ONE DESTINATION'
             }
-            className="nostos-overline text-[var(--accent)]"
+            className="nostos-overline text-[10px] sm:text-xs text-[var(--accent)]"
           >
             ALL PUBLIC SERVICES · ONE DESTINATION
           </p>
 
-          <h1 className="nostos-display-h1 mt-5 text-[clamp(3rem,6.4vw,6rem)] text-[var(--hero-text)]">
+          <h1 className="nostos-display-h1 mt-4 text-[clamp(2rem,6vw,4.5rem)] leading-[1.15] text-[var(--hero-text)] sm:mt-5">
             {locale === 'bn'
               ? 'সব সরকারি সেবা। এক ঠিকানায়।'
               : 'Every Public Service. One Harbour.'}
           </h1>
 
-          <p className="nostos-editorial-italic mt-4 max-w-2xl text-xl text-[var(--hero-muted)] sm:text-2xl">
+          <p className="nostos-editorial-italic mt-2.5 max-w-2xl text-sm leading-relaxed text-[var(--hero-muted)] sm:mt-4 sm:text-lg lg:text-xl">
             {locale === 'bn'
               ? 'যাত্রা যতই দীর্ঘ হোক — পথ দেখাবে জনসেবা।'
               : 'However long the voyage home — Jonoshheba lights the way.'}
           </p>
 
           {/* The SINGLE Search Bar in the Home Viewport */}
-          <div ref={heroSearchRef} data-testid="hero-search-slot" className="mt-10 w-full max-w-2xl text-left">
+          <div ref={heroSearchRef} data-testid="hero-search-slot" className="mt-6 w-full max-w-2xl text-left sm:mt-8 lg:mt-10">
             <SearchCombobox
               variant="hero"
               onSelectQuery={(q) => {
@@ -372,7 +372,7 @@ export default function HomePage() {
           )}
 
           {/* Subtle Location & 2G Lite Strip */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-[var(--hero-muted)]">
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-[11px] text-[var(--hero-muted)] sm:mt-8 sm:gap-4 sm:text-xs">
             <button
               type="button"
               onClick={detectMyArea}
@@ -395,7 +395,7 @@ export default function HomePage() {
         </div>
 
         {/* Animated Hairline SCROLL Cue */}
-        <div className="relative z-10 flex flex-col items-center pb-5">
+        <div className="relative z-10 hidden flex-col items-center pb-5 sm:flex">
           <span className="nostos-overline text-[9px] tracking-[0.45em] text-[var(--hero-muted)]">
             SCROLL
           </span>

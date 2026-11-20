@@ -2,8 +2,8 @@
 
 **Date:** November 20, 2026  
 **Status:** Ready for Production Deployment  
-**Git Branch:** `release/v1.0-admin-auth`  
-**Live Site URL:** https://web-big6.vercel.app/  
+**Git Branch:** `main`  
+**Live Site URL:** https://jonosheba.vercel.app/  
 
 ---
 

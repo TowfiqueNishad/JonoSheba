@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
 import { getDictionary, type Locale } from '@jonoshheba/shared';
@@ -8,6 +8,13 @@ import { AuthProvider } from '../lib/auth';
 import { LocaleProvider } from '../lib/i18n';
 import { ThemeProvider } from '../lib/theme';
 import './globals.css';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#050709',
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const hdrs = await headers();

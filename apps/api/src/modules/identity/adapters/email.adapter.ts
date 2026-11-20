@@ -10,7 +10,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import type { EmailPort } from '../ports/email.port';
 
 const FROM = process.env['FROM_EMAIL'] ?? 'নো-রিপ্লাই <noreply@jonoshheba.app>';
-const SITE_URL = process.env['SITE_URL'] ?? 'https://web-big6.vercel.app';
+const SITE_URL = process.env['SITE_URL'] ?? 'https://jonosheba.vercel.app';
 
 function emailHtml(title: string, body: string): string {
   return `<!DOCTYPE html>
