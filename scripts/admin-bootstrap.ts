@@ -42,7 +42,7 @@ console.log(`\n🛡  Jonoshheba Admin Bootstrap`);
 console.log(`   API: ${apiUrl}`);
 console.log(`   Email: ${values.email}\n`);
 
-const res = await fetch(`${apiUrl}/api/v1/admin/auth/bootstrap`, {
+const res = await fetch(`${apiUrl}/api/v1/admin-auth/bootstrap`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',

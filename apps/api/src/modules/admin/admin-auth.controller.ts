@@ -1,6 +1,6 @@
 /**
  * AdminAuthController — HTTP layer for admin authentication.
- * All routes under /api/v1/admin/auth/** are exempt from the citizen JWT guard.
+ * All routes under /api/v1/admin-auth/** are exempt from the citizen JWT guard.
  * Sensitive actions require re-auth.
  */
 

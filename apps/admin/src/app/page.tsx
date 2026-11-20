@@ -102,7 +102,7 @@ export default function AdminDashboard() {
         fetch(`${API_BASE}/api/v1/admin/overview`, { credentials: 'include' }),
         fetch(`${API_BASE}/api/v1/admin/review-queue`, { credentials: 'include' }),
         fetch(`${API_BASE}/api/v1/admin/providers`, { credentials: 'include' }),
-        fetch(`${API_BASE}/api/v1/admin/auth/me`, { credentials: 'include' }),
+        fetch(`${API_BASE}/api/v1/admin-auth/me`, { credentials: 'include' }),
       ]);
 
       if (overviewRes.status === 'fulfilled' && overviewRes.value.ok) {
@@ -131,7 +131,7 @@ export default function AdminDashboard() {
   useEffect(() => { void fetchData(); }, [fetchData]);
 
   async function handleLogout() {
-    await fetch(`${API_BASE}/api/v1/admin/auth/logout`, { method: 'DELETE', credentials: 'include' });
+    await fetch(`${API_BASE}/api/v1/admin-auth/logout`, { method: 'DELETE', credentials: 'include' });
     window.location.href = '/login';
   }
 

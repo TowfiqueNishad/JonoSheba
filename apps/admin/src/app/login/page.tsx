@@ -31,7 +31,7 @@ function LoginForm() {
     e.preventDefault();
     setError(''); setLockoutMsg(''); setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/v1/admin/auth/login`, {
+      const res = await fetch(`${API_BASE}/api/v1/admin-auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -54,7 +54,7 @@ function LoginForm() {
 
   async function fetchTotpSetup(token: string) {
     try {
-      const res = await fetch(`${API_BASE}/api/v1/admin/auth/totp/setup`, {
+      const res = await fetch(`${API_BASE}/api/v1/admin-auth/totp/setup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Pending-Token': token },
         credentials: 'include',
@@ -68,7 +68,7 @@ function LoginForm() {
     e.preventDefault();
     setError(''); setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/v1/admin/auth/totp`, {
+      const res = await fetch(`${API_BASE}/api/v1/admin-auth/totp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pendingToken, code: totpCode }),
@@ -85,7 +85,7 @@ function LoginForm() {
     e.preventDefault();
     setError(''); setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/v1/admin/auth/totp/confirm`, {
+      const res = await fetch(`${API_BASE}/api/v1/admin-auth/totp/confirm`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ secret: totpSetupSecret, code: totpCode }),

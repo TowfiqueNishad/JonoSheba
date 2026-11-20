@@ -41,35 +41,35 @@ ADMIN_BOOTSTRAP_SECRET=xxx pnpm admin:bootstrap \
 
 ### Login Flow
 ```
-POST /api/v1/admin/auth/login
+POST /api/v1/admin-auth/login
   { email, password }
   → { requiresTotp: true, pendingToken: "...", totpSetupRequired?: true }
 
-POST /api/v1/admin/auth/totp
+POST /api/v1/admin-auth/totp
   { pendingToken: "...", code: "123456" }
   → Sets jono_admin_session cookie (HttpOnly, Secure, SameSite=Strict)
 ```
 
 ### TOTP Setup (first login)
 ```
-POST /api/v1/admin/auth/totp/setup
+POST /api/v1/admin-auth/totp/setup
   → { secret, otpAuthUrl }
 
-POST /api/v1/admin/auth/totp/confirm
+POST /api/v1/admin-auth/totp/confirm
   { secret, code }
   → { recoveryCodes: ["XXXX-XXXX", ...] }  ← shown ONCE, save them!
 ```
 
 ### Session Validation
 ```
-GET /api/v1/admin/auth/me
+GET /api/v1/admin-auth/me
   Cookie: jono_admin_session=...
   → { id, email, role, status, totpEnabled, lastLoginAt }
 ```
 
 ### Logout
 ```
-DELETE /api/v1/admin/auth/logout
+DELETE /api/v1/admin-auth/logout
   → clears jono_admin_session cookie
 ```
 
