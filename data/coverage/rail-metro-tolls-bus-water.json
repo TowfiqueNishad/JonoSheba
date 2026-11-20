@@ -357,6 +357,75 @@
           { "stationCode": "FEN", "sequence": 4, "arrival": "17:15", "departure": "17:18", "dayOffset": 0, "km": 280 },
           { "stationCode": "CTG", "sequence": 5, "arrival": "19:00", "departure": null, "dayOffset": 0, "km": 373 }
         ]
+      },
+      {
+        "number": "742",
+        "nameBn": "তূর্ণা এক্সপ্রেস",
+        "nameEn": "Turna Express",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": [],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S", "AC_B"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "DA", "sequence": 1, "arrival": null, "departure": "23:15", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "23:38", "departure": "23:43", "dayOffset": 0, "km": 17 },
+          { "stationCode": "BB", "sequence": 3, "arrival": "00:55", "departure": "00:58", "dayOffset": 1, "km": 85 },
+          { "stationCode": "BBN", "sequence": 4, "arrival": "01:18", "departure": "01:21", "dayOffset": 1, "km": 108 },
+          { "stationCode": "CML", "sequence": 5, "arrival": "02:25", "departure": "02:28", "dayOffset": 1, "km": 172 },
+          { "stationCode": "FEN", "sequence": 6, "arrival": "03:15", "departure": "03:18", "dayOffset": 1, "km": 228 },
+          { "stationCode": "CTG", "sequence": 7, "arrival": "05:15", "departure": null, "dayOffset": 1, "km": 321 }
+        ]
+      },
+      {
+        "number": "788",
+        "nameBn": "সোনার বাংলা এক্সপ্রেস",
+        "nameEn": "Sonar Bangla Express",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": ["Wednesday"],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S", "AC_B"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "DA", "sequence": 1, "arrival": null, "departure": "07:00", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "07:23", "departure": "07:28", "dayOffset": 0, "km": 17 },
+          { "stationCode": "CTG", "sequence": 3, "arrival": "11:55", "departure": null, "dayOffset": 0, "km": 321 }
+        ]
+      },
+      {
+        "number": "740",
+        "nameBn": "উপবন এক্সপ্রেস",
+        "nameEn": "Upaban Express",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": ["Wednesday"],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S", "AC_B"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "DA", "sequence": 1, "arrival": null, "departure": "22:00", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "22:23", "departure": "22:28", "dayOffset": 0, "km": 17 },
+          { "stationCode": "SRM", "sequence": 3, "arrival": "02:35", "departure": "02:38", "dayOffset": 1, "km": 238 },
+          { "stationCode": "SYL", "sequence": 4, "arrival": "05:00", "departure": null, "dayOffset": 1, "km": 319 }
+        ]
+      },
+      {
+        "number": "759",
+        "nameBn": "পদ্মা এক্সপ্রেস",
+        "nameEn": "Padma Express",
+        "type": "intercity",
+        "zone": "West",
+        "offDays": ["Tuesday"],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S", "AC_B"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "DA", "sequence": 1, "arrival": null, "departure": "22:45", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "23:12", "departure": "23:17", "dayOffset": 0, "km": 17 },
+          { "stationCode": "RAJ", "sequence": 3, "arrival": "04:00", "departure": null, "dayOffset": 1, "km": 343 }
+        ]
       }
     ],
     "internationalServices": [

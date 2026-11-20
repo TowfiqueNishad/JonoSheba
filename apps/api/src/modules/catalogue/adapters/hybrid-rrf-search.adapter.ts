@@ -102,6 +102,12 @@ export class HybridRrfSearchAdapter implements SearchPort {
     return { doc, normTitleBn, normTitleEn, normKeywords, normBody, tokens };
   }
 
+  private static readonly GENERIC_STOP_WORDS = new Set([
+    'সেবা', 'তথ্য', 'অনলাইন', 'সরকারি', 'বাংলাদেশ', 'করার', 'নিয়ম', 'কত', 'ফি', 'কীভাবে', 'করব', 'পাব', 'লাগে', 'কি', 'কী', 'ও', 'এবং',
+    'service', 'services', 'info', 'information', 'online', 'govt', 'government', 'bangladesh', 'how', 'do', 'apply', 'for', 'and', 'what', 'is', 'the', 'fee', 'to', 'of', 'in',
+    'kivabe', 'korbo', 'koto',
+  ]);
+
   private scoreLexical(p: PreparedDoc, queryNorm: string, queryTokens: string[]): number {
     let score = 0;
 
@@ -111,24 +117,39 @@ export class HybridRrfSearchAdapter implements SearchPort {
     if (p.normKeywords.some((k) => k.includes(queryNorm))) score += 10;
     if (p.normBody.includes(queryNorm)) score += 4;
 
+    const significantTokens = queryTokens.filter((t) => t.length >= 2);
+    const substantiveTokens = significantTokens.filter(
+      (t) => !HybridRrfSearchAdapter.GENERIC_STOP_WORDS.has(t),
+    );
     let matchedTokens = 0;
-    for (const token of queryTokens) {
-      if (token.length < 2) continue;
+    let matchedSubstantive = 0;
+    for (const token of significantTokens) {
+      const isSubstantive = !HybridRrfSearchAdapter.GENERIC_STOP_WORDS.has(token);
       if (p.normTitleBn.includes(token) || p.normTitleEn.includes(token)) {
         score += 4.5;
         matchedTokens++;
+        if (isSubstantive) matchedSubstantive++;
       } else if (p.normKeywords.some((k) => k.includes(token))) {
         score += 4;
         matchedTokens++;
+        if (isSubstantive) matchedSubstantive++;
       } else if (p.normBody.includes(token)) {
         score += 1.5;
         matchedTokens++;
+        if (isSubstantive) matchedSubstantive++;
       }
     }
 
-    if (queryTokens.length > 1 && matchedTokens === queryTokens.length) {
+    if (significantTokens.length > 1 && matchedTokens === significantTokens.length) {
       score += 6;
     }
+
+    // If the query has >= 2 substantive (non-stop-word) tokens and NONE of them matched,
+    // do not return noise hits caused purely by a generic word like "সেবা" or "service".
+    if (substantiveTokens.length >= 2 && matchedSubstantive === 0) {
+      return 0;
+    }
+
     return score;
   }
 

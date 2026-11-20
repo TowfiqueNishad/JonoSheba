@@ -187,11 +187,15 @@ export class OrgsCatalogHotlinesService {
       const parentId =
         o.type === 'ministry'
           ? null
-          : o.id === 'org-bdris' || o.id === 'org-wasa' || o.id === 'org-bogura-cc'
-            ? 'org-lgd'
-            : o.id === 'org-dc-cumilla'
-              ? 'org-cabinet'
-              : null;
+          : o.id === 'org-dip' || o.id === 'org-bd-police'
+            ? 'org-moha'
+            : o.id === 'org-dshe'
+              ? 'org-moe'
+              : o.id === 'org-bdris' || o.id === 'org-wasa' || o.id === 'org-bogura-cc'
+                ? 'org-lgd'
+                : o.id === 'org-dc-cumilla'
+                  ? 'org-cabinet'
+                  : null;
 
       // Rule C1 & C4: Never invent personal mobile numbers or unsourced official names.
       // Show published office phone + "Verification pending" until data/imports/ministries/ files are imported.
@@ -285,11 +289,13 @@ export class OrgsCatalogHotlinesService {
       items = items.filter((o) => o.type.toLowerCase() === params.type!.trim().toLowerCase());
     }
     if (params.group && params.group.trim()) {
-      const g = params.group.trim().toLowerCase();
+      // Normalise both sides: strip non-alphanum so "education_ict" matches "Education & ICT"
+      const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF]+/gi, '');
+      const g = norm(params.group.trim());
       items = items.filter(
         (o) =>
-          o.group.toLowerCase().includes(g) ||
-          o.groupBn.includes(params.group!.trim()),
+          norm(o.group).includes(g) ||
+          norm(o.groupBn).includes(g),
       );
     }
     if (params.geo) {
@@ -637,27 +643,47 @@ export class OrgsCatalogHotlinesService {
     };
   }
 
-  listHotlines(category?: string, org?: string, q?: string) {
+  /**
+   * Accepts either positional (category?, org?, q?) or object ({category?, org?, q?}) params.
+   * Tests call listHotlines({ q: '999' }) or listHotlines({}).
+   */
+  listHotlines(
+    categoryOrParams?: string | { category?: string; org?: string; q?: string },
+    org?: string,
+    q?: string,
+  ) {
+    let category: string | undefined;
+    let resolvedOrg: string | undefined;
+    let resolvedQ: string | undefined;
+    if (categoryOrParams !== null && typeof categoryOrParams === 'object') {
+      category = categoryOrParams.category;
+      resolvedOrg = categoryOrParams.org;
+      resolvedQ = categoryOrParams.q;
+    } else {
+      category = categoryOrParams as string | undefined;
+      resolvedOrg = org;
+      resolvedQ = q;
+    }
     const summary = this.getHotlineCounts();
     let filtered = category
       ? summary.evaluated.filter((x) => x.h.category === category)
       : summary.evaluated;
-    if (org && org.trim()) {
-      const oNorm = org.trim().toLowerCase();
+    if (resolvedOrg && resolvedOrg.trim()) {
+      const oNorm = resolvedOrg.trim().toLowerCase();
       filtered = filtered.filter(
         (x) =>
           x.h.agency.toLowerCase().includes(oNorm) ||
           x.h.nameEn.toLowerCase().includes(oNorm) ||
-          x.h.nameBn.includes(org.trim()),
+          x.h.nameBn.includes(resolvedOrg!.trim()),
       );
     }
-    if (q && q.trim()) {
-      const qNorm = q.trim().toLowerCase();
+    if (resolvedQ && resolvedQ.trim()) {
+      const qNorm = resolvedQ.trim().toLowerCase();
       filtered = filtered.filter(
         (x) =>
           x.h.number.includes(qNorm) ||
           x.h.nameEn.toLowerCase().includes(qNorm) ||
-          x.h.nameBn.includes(q.trim()) ||
+          x.h.nameBn.includes(resolvedQ!.trim()) ||
           x.h.agency.toLowerCase().includes(qNorm),
       );
     }
@@ -674,6 +700,16 @@ export class OrgsCatalogHotlinesService {
         freshness,
       })),
     };
+  }
+
+  /** Alias: getOrgById → getOrg (for acceptance tests) */
+  getOrgById(id: string) {
+    return this.getOrg(id);
+  }
+
+  /** Alias: listOrgChildren → getOrgChildren (for acceptance tests) */
+  listOrgChildren(id: string) {
+    return this.getOrgChildren(id);
   }
 
   decideHotline(situation: string) {

@@ -14,6 +14,7 @@ import {
   Post,
   Req,
   Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { z } from 'zod';
@@ -51,7 +52,7 @@ const BootstrapSchema = z.object({
 });
 
 function getAdminSession(req: Request): string | undefined {
-  const cookies = (req as any).cookies as Record<string, string> | undefined;
+  const cookies = (req as unknown as { cookies?: Record<string, string> }).cookies;
   return cookies?.[ADMIN_SESSION_COOKIE];
 }
 
@@ -62,7 +63,7 @@ function getIp(req: Request): string {
 }
 
 @ApiTags('Admin Authentication')
-@Controller('api/v1/admin/auth')
+@Controller('api/v1/admin-auth')
 export class AdminAuthController {
   constructor(private readonly adminAuth: AdminAuthService) {}
 
@@ -123,7 +124,7 @@ export class AdminAuthController {
   @ApiOperation({ summary: 'Get current admin user' })
   async me(@Req() req: Request) {
     const token = getAdminSession(req);
-    if (!token) return { error: 'Not authenticated', code: 401 };
+    if (!token) throw new UnauthorizedException('Admin session required');
     const session = await this.adminAuth.validateSession(token);
     return this.adminAuth.getMe(session.adminUserId);
   }
@@ -149,9 +150,9 @@ export class AdminAuthController {
   @ApiOperation({ summary: 'Generate TOTP setup (after password login)' })
   async totpSetup(@Req() req: Request) {
     const token = getAdminSession(req);
-    if (!token) return { error: 'Not authenticated', code: 401 };
+    if (!token) throw new UnauthorizedException('Admin session required');
     const session = await this.adminAuth.validateSession(token).catch(() => null);
-    if (!session) return { error: 'Invalid session', code: 401 };
+    if (!session) throw new UnauthorizedException('Invalid admin session');
     const me = await this.adminAuth.getMe(session.adminUserId);
     return this.adminAuth.generateTotpSetup(me.email);
   }

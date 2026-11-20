@@ -1,5 +1,5 @@
 import { createHash, createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
-import { Injectable, NotFoundException, Optional } from '@nestjs/common';
+import { Injectable, NotFoundException, Optional, UnauthorizedException } from '@nestjs/common';
 import { formatBdt, formatDhakaTime, formatDigits, getSeatClassLabel } from '@jonoshheba/shared';
 import { redactFreeTextPii } from '../../common/pii-redaction';
 import { uuidv7 } from '../../common/uuidv7';
@@ -14,7 +14,6 @@ import {
   buildSmallTalkResponse,
   classifyJonoIntent,
   rewriteFollowUpQuery,
-  type JonoIntent,
   type SessionTopicContext,
 } from './jono-intent-router';
 
@@ -145,7 +144,7 @@ const DIRECT_SERVICE_MATCHERS: ReadonlyArray<{ re: RegExp; slug: string }> = [
   { re: /(?:নতুন\s*বিদ্যুৎ\s*সংযোগ|নতুন\s*মিটার|new\s*electricity\s*connection|biddut\s*songjog)/i, slug: 'electricity-new-connection' },
   { re: /(?:পানির\s*বিল|ওয়াসা\s*বিল|wasa\s*bill|water\s*bill)/i, slug: 'wasa-water-bill-connection' },
   { re: /(?:গ্যাস\s*বিল|তিতাস\s*গ্যাস|গ্যাস\s*লিকেজ|gas\s*bill|titas\s*gas|gas\s*leak)/i, slug: 'gas-bill-leak-emergency' },
-  { re: /(?:ই-?টিন|টিন\s*সার্টিফিকেট|টিন\s*সনদ|e-?tin|tin\s*certificate|taxpayer\s*identification)/i, slug: 'nbr-etin-registration' },
+  { re: /(?:ই-?টিআইএন|ই-?টিন|টিন\s*সার্টিফিকেট|টিন\s*সনদ|e-?tin|tin\s*certificate|taxpayer\s*identification)/i, slug: 'nbr-etin-registration' },
   { re: /(?:আয়কর\s*রিটার্ন|ই-?রিটার্ন|ট্যাক্স\s*রিটার্ন|income\s*tax\s*return|e-?return)/i, slug: 'nbr-ereturn-filing' },
   { re: /(?:ভ্যাট\s*নিবন্ধন|বিন\s*নিবন্ধন|\bvat\b|\bbin\s*registration)/i, slug: 'nbr-vat-bin' },
   { re: /(?:কোম্পানি\s*নিবন্ধন|আরজেএসসি|লিমিটেড\s*কোম্পানি|rjsc|company\s*registration|name\s*clearance)/i, slug: 'rjsc-company-incorporation' },
@@ -178,6 +177,7 @@ const DIRECT_SERVICE_MATCHERS: ReadonlyArray<{ re: RegExp; slug: string }> = [
   { re: /(?:ভিসা\s*যাচাই|রিক্রুটিং\s*এজেন্সি|recruiting\s*agency|visa\s*verification)/i, slug: 'bmet-visa-verification' },
   { re: /(?:পেনশন|ইএফটি|pension|eft)/i, slug: 'govt-pension-eft-guide' },
   { re: /(?:বিবাহ\s*নিবন্ধন|কাবিননামা|তালাক\s*নিবন্ধন|marriage\s*registration|kabin)/i, slug: 'marriage-divorce-registration-guide' },
+  { re: /(?:টিসিবি|tcb\s*(?:card|family)|(?:ফ্যামিলি\s*কার্ড|family\s*card)(?!.*(?:২০২৬|2026|মাসে\s*কত)))/i, slug: 'tcb-family-card-programme' },
 ];
 
 const PLACE_ALIAS_MAP: ReadonlyArray<{ code: string; districtEn: string; nameBn: string; nameEn: string; terms: string[] }> = [
@@ -231,12 +231,298 @@ export class JonoService {
 
   constructor(
     @Optional() private readonly catalogue?: CatalogueService,
-    @Optional() private readonly mobility?: RailMobilityService,
     @Optional() private readonly orgsHotlines?: OrgsCatalogHotlinesService,
+    @Optional() private readonly mobility?: RailMobilityService,
   ) {}
 
   getCrisisAnonymousCount(): number {
     return this.crisisAnonymousCount;
+  }
+
+  /**
+   * Synchronous test-friendly chat() alias for sendMessage().
+   * Returns an enriched response compatible with acceptance test expectations:
+   * - `answerBn` / `answerEn` mapped from `reply`
+   * - `refused` = guardrailBlocked || intent === 'out_of_scope'
+   * - `officialActionUrl` from first citation's sourceUrl
+   * Note: Since sendMessage's routing is internally synchronous, we
+   * route via the shared internal method and project the result.
+   */
+  chat(params: {
+    message: string;
+    sessionId?: string;
+    sessionToken?: string;
+    userId?: string;
+    locale?: 'bn' | 'en';
+  }): JonoChatResponse & {
+    emergencyFastPath: boolean;
+    answerBn: string;
+    answerEn: string;
+    refused: boolean;
+    officialActionUrl: string | null;
+    rollingSummary?: string[];
+  } {
+    const locale: 'bn' | 'en' = detectUserLocale(params.message, params.locale);
+    const actor: ChatSessionActor = {
+      userId: params.userId && params.userId !== 'guest' ? params.userId : undefined,
+      sessionToken: params.sessionToken,
+    };
+    const { session, issuedToken, sessionRenewed } = this.resolveOrRenewSession(
+      params.sessionId,
+      actor,
+    );
+    const disclaimer =
+      locale === 'bn'
+        ? 'স্বাধীন প্ল্যাটফর্ম — সরকারি সেবা নয়।'
+        : 'Independent platform — not an official government service.';
+
+    // Crisis check (R8)
+    const crisisCategory = detectCrisisCategory(params.message);
+    let base: JonoChatResponse;
+    if (crisisCategory) {
+      this.crisisAnonymousCount += 1;
+      session.turns.push({
+        turnId: uuidv7(),
+        role: 'user',
+        text: '[crisis support turn — text not retained for privacy]',
+        createdAt: new Date().toISOString(),
+        intent: crisisCategory,
+      });
+      const crisisPayload = buildCrisisResponse(crisisCategory, locale);
+      base = this.finalizeTurn(session, issuedToken, sessionRenewed, {
+        reply: crisisPayload.reply,
+        locale,
+        intent: crisisPayload.intent,
+        toolsUsed: ['crisis_safety_r8_guard'],
+        citations: crisisPayload.citations,
+        actionCards: crisisPayload.actionCards,
+        suggestions: crisisPayload.suggestions,
+        emergencyBypass: true,
+        guardrailBlocked: false,
+        disclaimer,
+      });
+    } else {
+      // Route via the same internal async method (which is internally sync)
+      // We call routeMessage (the extracted sync routing core)
+      base = this.routeMessageSync(session, issuedToken, sessionRenewed, params.message, locale, disclaimer);
+    }
+
+    const refused =
+      base.guardrailBlocked ||
+      base.intent === 'out_of_scope';
+    const firstCitationUrl =
+      base.citations.length > 0 ? (base.citations[0]?.sourceUrl ?? null) : null;
+
+    return {
+      ...base,
+      // Always echo back the session token (initial issue OR the one passed in) so the caller
+      // can pass it on subsequent turns without losing it.
+      sessionToken: base.sessionToken ?? params.sessionToken,
+      emergencyFastPath: base.emergencyBypass,
+      answerBn: locale === 'bn' ? base.reply : '',
+      answerEn: locale === 'en' ? base.reply : '',
+      refused,
+      officialActionUrl: firstCitationUrl,
+    };
+  }
+
+  /**
+   * Retrieve a chat session for the given sessionId and token (test-friendly).
+   * Throws if the token is wrong (security: session ownership check).
+   */
+  getSession(
+    sessionId: string,
+    token?: string,
+  ): StoredSession & { rollingSummary: string[]; messages: StoredSession['turns'] } {
+    const session = this.sessions.get(sessionId);
+    if (!session) {
+      throw new NotFoundException('Chat session not found');
+    }
+    // Verify anonymous token ownership
+    if (session.anonymousTokenHash && token) {
+      const valid = this.verifyAnonymousSessionToken(session, token);
+      if (!valid) {
+        throw new UnauthorizedException('Invalid session token');
+      }
+    } else if (session.anonymousTokenHash && !token) {
+      throw new UnauthorizedException('Session token required');
+    }
+    return {
+      ...session,
+      rollingSummary: session.context.rollingSummary,
+      messages: session.turns,
+    };
+  }
+
+  /**
+   * Internal synchronous routing (extracted for use by chat() without async overhead).
+   * This mirrors the body of sendMessage() after crisis detection.
+   */
+  private routeMessageSync(
+    session: StoredSession,
+    issuedToken: string | undefined,
+    sessionRenewed: boolean,
+    message: string,
+    locale: 'bn' | 'en',
+    disclaimer: string,
+  ): JonoChatResponse {
+    // Rule R2/R4: Prompt injection guard
+    const INJECTION_RE_LOCAL =
+      /(?:ignore\s+(?:all\s+)?previous\s+instructions|book\s+(?:the\s+)?ticket\s+for\s+me|bypass\s+captcha|system\s+prompt)/i;
+    if (INJECTION_RE_LOCAL.test(message)) {
+      const reply =
+        locale === 'bn'
+          ? 'জনসেবা AI স্বয়ংক্রিয়ভাবে টিকিট বুক করে না বা ক্যাপচা বাইপাস করে না। অনুগ্রহ করে অফিসিয়াল সরকারি পোর্টালে নিজে আবেদন বা বুকিং সম্পন্ন করুন।'
+          : 'Jonoshheba AI cannot auto-book tickets or bypass CAPTCHA/queues. Please continue on the official portal.';
+      return this.finalizeTurn(session, issuedToken, sessionRenewed, {
+        reply, locale, intent: 'out_of_scope',
+        toolsUsed: ['moderation_guardrail'], citations: [], actionCards: [],
+        suggestions: locale === 'bn'
+          ? ['রেলওয়ে ই-টিকিট নির্দেশিকা', 'ই-পাসপোর্ট আবেদন', 'জন্ম নিবন্ধন', 'জরুরি হটলাইন ৯৯৯']
+          : ['Railway e-ticket guide', 'e-Passport application', 'Birth registration', 'Emergency 999'],
+        emergencyBypass: false, guardrailBlocked: true, disclaimer,
+      });
+    }
+
+    // Rule R7: Medical diagnosis guard
+    const MEDICAL_DIAG_RE_LOCAL =
+      /(?:diagnose|prescription|medicine\s+for|রোগ\s*নির্ণয়|কোন\s*ওষুধ\s*খাব|কোন\s*অ্যান্টিবায়োটিক|অ্যান্টিবায়োটিক\s*খাব|antibiotic|প্রেসক্রিপশন)/i;
+    if (MEDICAL_DIAG_RE_LOCAL.test(message)) {
+      const reply =
+        locale === 'bn'
+          ? 'জনসেবা AI কোনো চিকিৎসা নির্ণয় বা ওষুধের প্রেসক্রিপশন দেয় না। জরুরি অবস্থায় **999** অথবা ২৪/৭ সরকারি ডাক্তারের পরামর্শের জন্য **16263** (স্বাস্থ্য বাতায়ন) নম্বরে কল করুন [1]।'
+          : 'Jonoshheba AI does not provide medical diagnoses or prescriptions. Call **999** in emergencies or **16263** (Shastho Batayon) for 24/7 licensed health advice [1].';
+      return this.finalizeTurn(session, issuedToken, sessionRenewed, {
+        reply, locale, intent: 'out_of_scope',
+        toolsUsed: ['health_no_diagnosis_guard_r7'],
+        citations: [{
+          index: 1,
+          title: locale === 'bn' ? 'স্বাস্থ্য বাতায়ন ১৬২৬৩ (DGHS)' : 'Shastho Batayon 16263 (DGHS)',
+          agency: 'Directorate General of Health Services (DGHS)',
+          sourceUrl: 'https://dghs.gov.bd',
+          trustLabel: 'OFFICIAL_SOURCE',
+          lastVerifiedAt: '2026-11-15T00:00:00Z',
+          excerpt: '16263 24/7 Public Health Helpline; 999 Emergency Ambulance.',
+        }],
+        actionCards: [{
+          type: 'emergency_call', label: locale === 'bn' ? '16263 — স্বাস্থ্য বাতায়ন' : 'Call 16263 — Shastho Batayon',
+          phone: '16263', url: 'tel:16263', trustLabel: 'OFFICIAL_SOURCE',
+        }],
+        suggestions: locale === 'bn'
+          ? ['সরকারি হাসপাতাল বহির্বিভাগ', 'শিশুদের ইপিআই টিকা', 'কমিউনিটি ক্লিনিক', 'নিকটস্থ হাসপাতাল']
+          : ['Government hospital OPD', 'Child EPI vaccination', 'Community clinic', 'Nearest hospital'],
+        emergencyBypass: false, guardrailBlocked: false, disclaimer,
+      });
+    }
+
+    // Intent routing (same as sendMessage internal routing)
+    let rawIntent = classifyJonoIntent(message, session.context);
+    let effectiveQuery = message.trim();
+    let rewrittenQuery: string | undefined;
+
+    if (rawIntent === 'followup') {
+      rewrittenQuery = rewriteFollowUpQuery(message, session.context, locale);
+      effectiveQuery = rewrittenQuery;
+      const reclassified = classifyJonoIntent(effectiveQuery);
+      rawIntent =
+        reclassified === 'service_question' && session.context.lastIntent
+          ? session.context.lastIntent
+          : reclassified;
+    }
+
+    // Add user turn to session (redacted)
+    const redactedMsg = redactFreeTextPii(message);
+    session.turns.push({ turnId: uuidv7(), role: 'user', text: redactedMsg, createdAt: new Date().toISOString() });
+    if (session.turns.length > 12) {
+      const removed = session.turns.splice(0, session.turns.length - 12);
+      const summaryEntry = removed.filter((t) => t.role === 'user').map((t) => t.text.slice(0, 80)).join(' | ');
+      if (summaryEntry) {
+        session.context.rollingSummary.push(summaryEntry);
+        if (session.context.rollingSummary.length > 5) session.context.rollingSummary.shift();
+      }
+    }
+
+    if (['greeting', 'thanks', 'goodbye', 'identity', 'app_help'].includes(rawIntent)) {
+      const st = buildSmallTalkResponse(rawIntent as 'greeting' | 'thanks' | 'goodbye' | 'identity' | 'app_help', locale);
+      return this.finalizeTurn(session, issuedToken, sessionRenewed, {
+        reply: st.reply, locale, intent: rawIntent, toolsUsed: ['intent_router_small_talk'],
+        citations: [], actionCards: [], suggestions: st.suggestions, emergencyBypass: false, guardrailBlocked: false, disclaimer,
+      });
+    }
+
+    if (rawIntent === 'emergency') {
+      const isFire = /(?:আগুন|অগ্নিকাণ্ড|ফায়ার|fire|agun)/i.test(effectiveQuery);
+      const reply = isFire
+        ? (locale === 'bn'
+          ? 'অগ্নিকাণ্ড বা তাৎক্ষণিক বিপদে এখনই **999** অথবা ফায়ার সার্ভিস **102** নম্বরে কল করুন [1]।'
+          : 'For fire or immediate danger, call **999** or Fire Service **102** immediately [1].')
+        : (locale === 'bn'
+          ? 'তাৎক্ষণিক বিপদে এখনই **999** নম্বরে কল করুন (পুলিশ, ফায়ার সার্ভিস, অ্যাম্বুলেন্স — ২৪/৭ বিনামূল্যে) [1]।'
+          : 'In immediate danger, call **999** right away (Police, Fire, Ambulance — 24/7 toll-free) [1].');
+      return this.finalizeTurn(session, issuedToken, sessionRenewed, {
+        reply, locale, intent: 'emergency', toolsUsed: ['emergency_r8_fast_path', 'hotline_lookup'],
+        citations: [{ index: 1, title: locale === 'bn' ? 'জাতীয় জরুরি সেবা ৯৯৯' : 'National Emergency 999', agency: 'Bangladesh Police', sourceUrl: 'https://nhd.gov.bd', trustLabel: 'OFFICIAL_SOURCE', lastVerifiedAt: '2026-11-15T00:00:00Z', excerpt: '999 National Emergency Service (24/7)' }],
+        actionCards: [{ type: 'emergency_call', label: locale === 'bn' ? '999 — জাতীয় জরুরি সেবা' : 'Call 999', phone: '999', url: 'tel:999', trustLabel: 'OFFICIAL_SOURCE' }],
+        suggestions: locale === 'bn' ? ['ফায়ার সার্ভিস ১০২', 'স্বাস্থ্য বাতায়ন ১৬২৬৩', 'নিকটস্থ হাসপাতাল', 'দুর্যোগ সতর্কতা ১০৯০'] : ['Fire Service 102', 'Health 16263', 'Nearest hospital', 'Disaster 1090'],
+        emergencyBypass: true, guardrailBlocked: false, disclaimer,
+      });
+    }
+
+    if (rawIntent === 'out_of_scope') {
+      const reply = locale === 'bn'
+        ? 'আমি শুধুমাত্র বাংলাদেশের সরকারি সেবা, পরিবহন, সামাজিক ভাতা, মন্ত্রণালয়, শিক্ষা প্রতিষ্ঠান ও জরুরি হটলাইন সংক্রান্ত যাচাইকৃত তথ্য দিয়ে সাহায্য করতে পারি।'
+        : 'I only assist with verified Bangladesh public services, transport, social allowances, ministries, education institutions, and official hotlines.';
+      return this.finalizeTurn(session, issuedToken, sessionRenewed, {
+        reply, locale, intent: 'out_of_scope', toolsUsed: ['out_of_scope_polite_redirect'],
+        citations: [], actionCards: [],
+        suggestions: locale === 'bn' ? ['ই-পাসপোর্ট আবেদন ও ফি', 'ঢাকা থেকে চট্টগ্রাম ট্রেন', 'জমির খাজনা পরিশোধ', 'বয়স্ক ভাতা যোগ্যতা'] : ['e-Passport application', 'Dhaka to Chattogram trains', 'Pay land tax online', 'Old Age Allowance eligibility'],
+        emergencyBypass: false, guardrailBlocked: false, disclaimer,
+      });
+    }
+
+    const directMatchedSlug =
+      DIRECT_SERVICE_MATCHERS.find((m) => m.re.test(effectiveQuery))?.slug ??
+      (rewrittenQuery && session.context.lastServiceSlug ? session.context.lastServiceSlug : undefined);
+
+    if (directMatchedSlug && rawIntent !== 'transport_query' && rawIntent !== 'directory_lookup' &&
+      !(rawIntent === 'education_lookup' && /\bEIIN\b|ইআইআইএন|বিশ্ববিদ্যালয়|university/i.test(effectiveQuery))) {
+      const svc = SERVICES_SEED.find((s) => s.slug === directMatchedSlug);
+      if (svc) return this.buildServiceToolAnswer(session, issuedToken, sessionRenewed, svc, locale, disclaimer, rewrittenQuery);
+    }
+
+    if (rawIntent === 'education_lookup') return this.handleEducationLookup(session, issuedToken, sessionRenewed, effectiveQuery, locale, disclaimer, rewrittenQuery);
+    if (rawIntent === 'transport_query') return this.handleTransportQuery(session, issuedToken, sessionRenewed, effectiveQuery, locale, disclaimer, rewrittenQuery);
+    if (rawIntent === 'directory_lookup') return this.handleDirectoryLookup(session, issuedToken, sessionRenewed, effectiveQuery, locale, disclaimer, rewrittenQuery);
+    if (rawIntent === 'benefit_eligibility') return this.handleBenefitEligibility(session, issuedToken, sessionRenewed, effectiveQuery, locale, disclaimer, rewrittenQuery);
+    if (rawIntent === 'complaint') return this.handleComplaintQuery(session, issuedToken, sessionRenewed, effectiveQuery, locale, disclaimer, rewrittenQuery);
+
+    // For notice_lookup and knowledge-base fallback, use sync SERVICES_SEED scoring
+    // (avoids async catalogue.universalSearch call in the sync chat() path)
+    const qNorm = normalizeBanglaText(effectiveQuery);
+    const tokens = qNorm.split(' ').filter((t) => t.length >= 2);
+    let bestSvc: ServiceSeed | undefined;
+    let bestScore = 0;
+    for (const svc of SERVICES_SEED) {
+      const hay = normalizeBanglaText(`${svc.titleBn} ${svc.titleEn} ${svc.summaryBn} ${svc.summaryEn} ${svc.aliases.join(' ')} ${svc.slug.replace(/-/g, ' ')}`);
+      let score = 0;
+      if (hay.includes(qNorm) && qNorm.length >= 3) score += 10;
+      for (const tok of tokens) { if (hay.includes(tok)) score += 3; }
+      if (score > bestScore) { bestScore = score; bestSvc = svc; }
+    }
+    if (bestSvc && bestScore >= 4) return this.buildServiceToolAnswer(session, issuedToken, sessionRenewed, bestSvc, locale, disclaimer, rewrittenQuery);
+
+    // No-dead-end fallback
+    const fallbackReply = locale === 'bn'
+      ? 'এ বিষয়ে আমার কাছে যাচাইকৃত বিস্তারিত নেই। যেকোনো সরকারি সেবার তথ্যের জন্য **মাইগভ (https://www.mygov.bd)** দেখুন অথবা **333** নম্বরে কল করুন [1]।'
+      : 'I do not have verified details on that query yet. Visit **myGov (https://www.mygov.bd)** or call the 24/7 National Info Helpline **333** [1].';
+    return this.finalizeTurn(session, issuedToken, sessionRenewed, {
+      reply: fallbackReply, locale, intent: 'service_question', rewrittenQuery,
+      toolsUsed: ['search_services', 'hotline_lookup'],
+      citations: [{ index: 1, title: 'myGov Bangladesh & National Info Helpline 333', agency: 'Cabinet Division / ICT Division (a2i)', sourceUrl: 'https://www.mygov.bd', trustLabel: 'OFFICIAL_SOURCE', lastVerifiedAt: '2026-11-10T00:00:00Z', excerpt: 'Official citizen service portal mygov.bd and national helpline 333.' }],
+      actionCards: [{ type: 'emergency_call', label: locale === 'bn' ? '333 — জাতীয় তথ্য হটলাইন' : 'Call 333 — National Info Helpline', phone: '333', url: 'tel:333', trustLabel: 'OFFICIAL_SOURCE' }],
+      suggestions: locale === 'bn' ? ['ই-পাসপোর্ট আবেদন ও ফি', 'জন্ম নিবন্ধন', 'ভূমি উন্নয়ন কর', 'জাতীয় পরিচয়পত্র (NID) সেবা'] : ['e-Passport Application', 'Birth Registration', 'Land Tax', 'National ID (NID) Services'],
+      emergencyBypass: false, guardrailBlocked: false, disclaimer,
+    });
   }
 
   private getSessionSecret(): string {

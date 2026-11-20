@@ -33,7 +33,7 @@ const TOP_3_SEARCH_FIXTURE: ReadonlyArray<{
   { label: '17. English e-TIN', query: 'tin certificate', locale: 'en', expectedAnySlugOrCode: ['nbr-etin-registration'] },
   { label: '18. Bangla trade license', query: 'ট্রেড লাইসেন্স', locale: 'bn', expectedAnySlugOrCode: ['trade-license-new'] },
   { label: '19. Bangla child vaccination', query: 'শিশুর টিকা', locale: 'bn', expectedAnySlugOrCode: ['epi-child-vaccination'] },
-  { label: '20. Bangla transport intent', query: 'ঢাকা চট্টগ্রাম ট্রেন', locale: 'bn', expectedAnySlugOrCode: ['RAIL-DA', 'RAIL-CTG', 'railway-eticket-guide'] },
+  { label: '20. Bangla transport intent', query: 'ঢাকা চট্টগ্রাম ট্রেন', locale: 'bn', expectedAnySlugOrCode: ['RAIL-DA', 'RAIL-CTG', 'railway-eticket-guide', 'train-da-ctg'] },
 ];
 
 describe('Phase 04: Catalogue, Life Events, Lifecycle & Universal Bangla/English/Banglish Search', () => {

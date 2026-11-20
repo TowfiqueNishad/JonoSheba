@@ -327,7 +327,7 @@ describe('Section 1 (1.1–1.9) — Jono AI Eval Gate (≥300 Golden Questions, 
   const repo = new SeededCatalogueRepository();
   const searchEngine = new HybridRrfSearchAdapter();
   const catalogue = new CatalogueService(repo, searchEngine);
-  const jono = new JonoService(catalogue, mobility, orgsHotlines);
+  const jono = new JonoService(catalogue, orgsHotlines, mobility);
 
   it('1.1 Session Auto-Recovery: POST /assistant/message never returns 404 on missing/expired/invalid sessionId, while GET/DELETE still enforce 404 ownership', async () => {
     // 1. Send with a non-existent sessionId and no token -> must succeed (no 404!) and return sessionRenewed: true

@@ -92,8 +92,29 @@ rules:
     editor: [200, 201, 202, 400, 403, 404]
     admin: [200, 201, 202, 400, 403, 404]
 
+  - name: admin_auth_session_required_endpoints
+    # /me and /totp/setup require a valid admin session cookie — throw 401 without it
+    # /totp/confirm returns 400 (body validation) before the session check for anonymous callers
+    pattern: "^(GET /api/v1/admin-auth/me|POST /api/v1/admin-auth/totp/setup|POST /api/v1/admin-auth/totp/confirm)$"
+    anonymous: [400, 401]
+    citizen: [400, 401]
+    other_citizen: [400, 401]
+    editor_no_mfa: [400, 401]
+    editor: [400, 401]
+    admin: [200, 201, 400, 401, 403, 404, 422]
+
+  - name: admin_auth_stateless_endpoints
+    # Login, bootstrap, TOTP verify, and logout are public/stateless — 200 or 400/401/422
+    pattern: "^(GET|POST|DELETE) /api/v1/admin-auth/"
+    anonymous: [200, 201, 400, 401, 403, 404, 422]
+    citizen: [200, 201, 400, 401, 403, 404, 422]
+    other_citizen: [200, 201, 400, 401, 403, 404, 422]
+    editor_no_mfa: [200, 201, 400, 401, 403, 404, 422]
+    editor: [200, 201, 400, 401, 403, 404, 422]
+    admin: [200, 201, 400, 401, 403, 404, 422]
+
   - name: public_read_and_stateless_endpoints
-    pattern: "^(GET|POST) /(health|ready|\\.well-known/jwks\\.json|api/v1/(\\.well-known/jwks\\.json|health|ready|openapi\\.json|stats|auth/(otp/request|otp/verify|register|email/verify|login|password/forgot|password/reset|oauth/\\{provider\\}|guest|refresh)|geo/.*|rail/.*|metro/.*|tolls|bus/.*|water/.*|air/.*|journeys/plan|orgs(/.*)?|ministries(/.*)?|education(/.*)?|offices/resolve|services(/.*)?|programmes(/.*)?|programs(/.*)?|scholarships(/.*)?|jobs(/.*)?|places(/.*)?|offline-packs/.*|calendar(\\.ics)?|hotlines(/.*)?|categories|life-events(/.*)?|notices|agencies|facilities|utilities/(outages|providers)|faqs|search(/suggest)?|content-reports|transport/.*|eligibility/.*|complaint-guides|emergency(/.*)?|health/guidance|country-packs(/.*)?|(chat|assistant)/(message|stream)))$"
+    pattern: "^(GET|POST) /(health|ready|\\.well-known/jwks\\.json|api/v1/(\\.well-known/jwks\\.json|health|ready|openapi\\.json|stats|auth/(otp/request|otp/verify|email/otp/request|email/otp/verify|register|email/verify|login|password/forgot|password/reset|oauth/\\{provider\\}|guest|refresh)|geo/.*|rail/.*|metro/.*|tolls|bus/.*|water/.*|air/.*|journeys/plan|orgs(/.*)?|ministries(/.*)?|education(/.*)?|offices/resolve|services(/.*)?|programmes(/.*)?|programs(/.*)?|scholarships(/.*)?|jobs(/.*)?|places(/.*)?|offline-packs/.*|calendar(\\.ics)?|hotlines(/.*)?|categories|life-events(/.*)?|notices|agencies|facilities|utilities/(outages|providers)|faqs|search(/suggest)?|content-reports|transport/.*|eligibility/.*|complaint-guides|emergency(/.*)?|health/guidance|country-packs(/.*)?|(chat|assistant)/(message|stream)))$"
     anonymous: [200, 201, 400, 401, 404, 422]
     citizen: [200, 201, 400, 401, 404, 422]
     other_citizen: [200, 201, 400, 401, 404, 422]
