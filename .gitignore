@@ -44,3 +44,5 @@ mlruns/
 mlartifacts/
 *.sqlite
 *.db
+
+.vercel
