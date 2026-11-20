@@ -1038,9 +1038,20 @@ export class JonoService {
               : '';
           const depText = t.departure ? formatDhakaTime(t.departure, locale) : '—';
           const arrText = t.arrival ? `${formatDhakaTime(t.arrival, locale)}${overnight}` : '—';
+          const BN_WEEKDAYS: Record<string, string> = {
+            Sunday: 'রবিবার',
+            Monday: 'সোমবার',
+            Tuesday: 'মঙ্গলবার',
+            Wednesday: 'বুধবার',
+            Thursday: 'বৃহস্পতিবার',
+            Friday: 'শুক্রবার',
+            Saturday: 'শনিবার',
+          };
           const offDayText =
             t.offDays.length > 0
-              ? t.offDays.join(', ')
+              ? locale === 'bn'
+                ? t.offDays.map((d) => BN_WEEKDAYS[d] ?? d).join(', ')
+                : t.offDays.join(', ')
               : locale === 'bn'
                 ? 'সপ্তাহের প্রতিদিন চলে'
                 : 'Runs daily';

@@ -5,6 +5,7 @@ import {
   HttpException,
   Inject,
   Injectable,
+  Optional,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Role } from '@jonoshheba/shared';
@@ -23,6 +24,7 @@ import {
 import { OAUTH_PROVIDERS_PORT, type OAuthProviderPort } from '../ports/oauth.port';
 import { SMS_PORT, type SmsPort } from '../ports/sms.port';
 import { TURNSTILE_PORT, type TurnstilePort } from '../ports/turnstile.port';
+import { EMAIL_PORT, type EmailPort } from '../ports/email.port';
 
 const OTP_TTL_MS = 5 * 60 * 1000; // 5 minutes
 const OTP_MAX_ATTEMPTS = 5;
@@ -71,6 +73,9 @@ export class AuthService {
     @Inject(OAUTH_PROVIDERS_PORT)
     private readonly oauthProviders: OAuthProviderPort[],
     private readonly crypto: IdentityCryptoService,
+    @Optional()
+    @Inject(EMAIL_PORT)
+    private readonly emailPort?: EmailPort,
   ) {}
 
   private toPublicUser(user: UserEntity): AuthTokenBundle['user'] {
@@ -290,6 +295,144 @@ export class AuthService {
         phoneE164,
         email: null,
         emailVerifiedAt: null,
+        passwordHash: null,
+        displayName: null,
+        status: 'active',
+        locale: 'bn',
+        isGuest: false,
+        mfaEnabled: false,
+        mfaSecret: null,
+        mfaBackupCodeHashes: [],
+        roles: [{ role: Role.CITIZEN, orgId: null }],
+        createdAt: now,
+        updatedAt: now,
+        deletedAt: null,
+      });
+    }
+
+    if (user.status === 'suspended' || user.status === 'deleted') {
+      throw new ForbiddenException('Account is not active');
+    }
+
+    return this.issueSessionBundle({
+      user,
+      deviceId: params.deviceId,
+      platform: params.platform,
+      ip: params.ip,
+      userAgent: params.userAgent,
+    });
+  }
+
+  // --- 1.2 Passwordless Email OTP Auth ---
+
+  async requestEmailOtp(params: {
+    email: string;
+    locale?: 'bn' | 'en';
+    turnstileToken?: string;
+    ip?: string;
+  }): Promise<{ sent: boolean; devOtpPreview?: string; devCode?: string }> {
+    const email = params.email.trim().toLowerCase();
+    const rate = await this.rateLimiter.consume(`otp:email:${email}`, 5, 900);
+    if (!rate.allowed) {
+      throwRateLimitExceeded(rate.retryAfterSeconds, 'Too many email verification requests');
+    }
+
+    const rawCode = this.crypto.generateOtpCode();
+    const challengeId = uuidv7();
+    const codeHash = this.crypto.hashSecret(rawCode, `otp:${challengeId}`);
+
+    await this.repo.createOtpChallenge({
+      id: challengeId,
+      phoneE164: `email:${email}`,
+      codeHash,
+      purpose: 'login',
+      attempts: 0,
+      maxAttempts: 5,
+      ipHash: this.crypto.hashIp(params.ip),
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+      consumedAt: null,
+      createdAt: new Date(),
+    });
+
+    if (this.emailPort) {
+      await this.emailPort
+        .sendVerificationCode(email, rawCode, params.locale ?? 'bn')
+        .catch(() => undefined);
+    }
+
+    const isDev = process.env.NODE_ENV !== 'production' || process.env.SHOW_DEV_OTP === 'true';
+    return {
+      sent: true,
+      ...(isDev ? { devOtpPreview: rawCode, devCode: rawCode } : {}),
+    };
+  }
+
+  async verifyEmailOtp(params: {
+    email: string;
+    code: string;
+    deviceId: string;
+    platform: PlatformType;
+    guestUserId?: string;
+    ip?: string;
+    userAgent?: string;
+  }): Promise<AuthTokenBundle> {
+    const email = params.email.trim().toLowerCase();
+    const challenge = await this.repo.findLatestActiveOtp(`email:${email}`);
+
+    if (!challenge || challenge.consumedAt) {
+      throw new UnauthorizedException('Invalid or expired verification code');
+    }
+    if (challenge.expiresAt.getTime() <= Date.now()) {
+      throw new UnauthorizedException('Code has expired. Please request a new one.');
+    }
+    if (challenge.attempts >= challenge.maxAttempts) {
+      throw new HttpException(
+        'Code locked after maximum failed attempts. Request a new code.',
+        423,
+      );
+    }
+
+    const valid = this.crypto.verifyHashedSecret(
+      params.code.trim(),
+      challenge.codeHash,
+      `otp:${challenge.id}`,
+    );
+
+    if (!valid) {
+      challenge.attempts += 1;
+      await this.repo.updateOtpChallenge(challenge);
+      if (challenge.attempts >= challenge.maxAttempts) {
+        throw new HttpException(
+          'Code locked after maximum failed attempts. Request a new code.',
+          423,
+        );
+      }
+      throw new UnauthorizedException('Invalid verification code');
+    }
+
+    challenge.consumedAt = new Date();
+    await this.repo.updateOtpChallenge(challenge);
+
+    let user = await this.repo.findUserByEmail(email);
+
+    if (!user && params.guestUserId) {
+      const guest = await this.repo.findUserById(params.guestUserId);
+      if (guest && guest.isGuest) {
+        guest.email = email;
+        guest.emailVerifiedAt = new Date();
+        guest.isGuest = false;
+        guest.roles = [{ role: Role.CITIZEN, orgId: null }];
+        user = await this.repo.updateUser(guest);
+      }
+    }
+
+    if (!user) {
+      const now = new Date();
+      user = await this.repo.createUser({
+        id: uuidv7(),
+        phoneE164: null,
+        email,
+        emailVerifiedAt: now,
         passwordHash: null,
         displayName: null,
         status: 'active',

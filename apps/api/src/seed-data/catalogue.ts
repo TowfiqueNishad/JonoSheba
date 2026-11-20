@@ -16,12 +16,21 @@ export interface CategorySeed {
   icon: string;
 }
 
+export type OrgType =
+  | 'Ministry'
+  | 'Division'
+  | 'Directorate'
+  | 'Agency'
+  | 'FieldOffice'
+  | 'LocalGov';
+
 export interface AgencySeed {
   slug: string;
   nameBn: string;
   nameEn: string;
   officialUrl: string;
   contactPhone?: string;
+  agencyType?: OrgType;
 }
 
 export interface ServiceSeed {
@@ -66,26 +75,26 @@ export const CATEGORIES_SEED: readonly CategorySeed[] = [
 ];
 
 export const AGENCIES_SEED: readonly AgencySeed[] = [
-  { slug: 'ec-nidw', nameBn: 'জাতীয় পরিচয় নিবন্ধন অনুবিভাগ (নির্বাচন কমিশন)', nameEn: 'NID Wing, Bangladesh Election Commission', officialUrl: 'https://services.nidw.gov.bd', contactPhone: '105' },
-  { slug: 'bdris', nameBn: 'রেজিস্ট্রার জেনারেলের কার্যালয়, জন্ম ও মৃত্যু নিবন্ধন', nameEn: 'Office of the Registrar General (BDRIS)', officialUrl: 'https://bdris.gov.bd' },
-  { slug: 'dip', nameBn: 'ইমিগ্রেশন ও পাসপোর্ট অধিদপ্তর', nameEn: 'Department of Immigration & Passports (DIP)', officialUrl: 'https://www.epassport.gov.bd', contactPhone: '16445' },
-  { slug: 'brta', nameBn: 'বাংলাদেশ সড়ক পরিবহন কর্তৃপক্ষ (বিআরটিএ)', nameEn: 'Bangladesh Road Transport Authority (BRTA)', officialUrl: 'https://bsp.brta.gov.bd', contactPhone: '16107' },
-  { slug: 'br-rail', nameBn: 'বাংলাদেশ রেলওয়ে', nameEn: 'Bangladesh Railway', officialUrl: 'https://eticket.railway.gov.bd' },
-  { slug: 'nbr', nameBn: 'জাতীয় রাজস্ব বোর্ড (এনবিআর)', nameEn: 'National Board of Revenue (NBR)', officialUrl: 'https://secure.incometax.gov.bd' },
-  { slug: 'rjsc', nameBn: 'যৌথমূলধন কোম্পানি ও ফার্মসমূহের পরিদপ্তর (আরজেএসসি)', nameEn: 'Registrar of Joint Stock Companies and Firms (RJSC)', officialUrl: 'https://app.roc.gov.bd' },
-  { slug: 'minland', nameBn: 'ভূমি মন্ত্রণালয়', nameEn: 'Ministry of Land', officialUrl: 'https://land.gov.bd', contactPhone: '16122' },
-  { slug: 'dghs', nameBn: 'স্বাস্থ্য অধিদপ্তর (ডিজিএইচএস)', nameEn: 'Directorate General of Health Services (DGHS)', officialUrl: 'https://dghs.gov.bd', contactPhone: '16263' },
-  { slug: 'dshe', nameBn: 'মাধ্যমিক ও উচ্চশিক্ষা অধিদপ্তর', nameEn: 'Directorate of Secondary and Higher Education', officialUrl: 'https://dshe.gov.bd' },
-  { slug: 'dss', nameBn: 'সমাজসেবা অধিদপ্তর', nameEn: 'Department of Social Services (DSS)', officialUrl: 'https://dss.gov.bd' },
-  { slug: 'bd-police', nameBn: 'বাংলাদেশ পুলিশ', nameEn: 'Bangladesh Police', officialUrl: 'https://pcc.police.gov.bd', contactPhone: '999' },
-  { slug: 'cabinet-grs', nameBn: 'মন্ত্রিপরিষদ বিভাগ (অভিযোগ প্রতিকার ব্যবস্থা - GRS)', nameEn: 'Cabinet Division (Grievance Redress System - GRS)', officialUrl: 'https://www.grs.gov.bd' },
-  { slug: 'mygov', nameBn: 'মাইগভ (এটুআই / তথ্য ও যোগাযোগ প্রযুক্তি বিভাগ)', nameEn: 'myGov Bangladesh (a2i / ICT Division)', officialUrl: 'https://www.mygov.bd', contactPhone: '333' },
-  { slug: 'bmet', nameBn: 'জনশক্তি কর্মসংস্থান ও প্রশিক্ষণ ব্যুরো (বিএমইটি)', nameEn: 'Bureau of Manpower, Employment and Training (BMET)', officialUrl: 'https://www.amiprobashi.com' },
-  { slug: 'dae', nameBn: 'কৃষি সম্প্রসারণ অধিদপ্তর', nameEn: 'Department of Agricultural Extension (DAE)', officialUrl: 'https://dae.gov.bd', contactPhone: '16123' },
-  { slug: 'power-div', nameBn: 'বিদ্যুৎ বিভাগ (ডেসকো/ডিপিডিসি/পল্লী বিদ্যুৎ)', nameEn: 'Power Division (DESCO / DPDC / BREB)', officialUrl: 'https://powerdivision.gov.bd' },
-  { slug: 'wasa', nameBn: 'ঢাকা ও স্থানীয় ওয়াসা', nameEn: 'WASA (Water Supply & Sewerage Authority)', officialUrl: 'https://dwasa.org.bd', contactPhone: '16162' },
-  { slug: 'lgd', nameBn: 'স্থানীয় সরকার বিভাগ (ইউনিয়ন পরিষদ / সিটি কর্পোরেশন)', nameEn: 'Local Government Division (UP / City Corporation)', officialUrl: 'https://prottoyon.gov.bd' },
-  { slug: 'dncrp', nameBn: 'জাতীয় ভোক্তা-অধিকার সংরক্ষণ অধিদপ্তর', nameEn: 'Directorate of National Consumer Rights Protection', officialUrl: 'https://dncrp.gov.bd', contactPhone: '16121' },
+  { slug: 'ec-nidw', nameBn: 'জাতীয় পরিচয় নিবন্ধন অনুবিভাগ (নির্বাচন কমিশন)', nameEn: 'NID Wing, Bangladesh Election Commission', officialUrl: 'https://services.nidw.gov.bd', contactPhone: '105', agencyType: 'Division' },
+  { slug: 'bdris', nameBn: 'রেজিস্ট্রার জেনারেলের কার্যালয়, জন্ম ও মৃত্যু নিবন্ধন', nameEn: 'Office of the Registrar General (BDRIS)', officialUrl: 'https://bdris.gov.bd', agencyType: 'Agency' },
+  { slug: 'dip', nameBn: 'ইমিগ্রেশন ও পাসপোর্ট অধিদপ্তর', nameEn: 'Department of Immigration & Passports (DIP)', officialUrl: 'https://www.epassport.gov.bd', contactPhone: '16445', agencyType: 'Directorate' },
+  { slug: 'brta', nameBn: 'বাংলাদেশ সড়ক পরিবহন কর্তৃপক্ষ (বিআরটিএ)', nameEn: 'Bangladesh Road Transport Authority (BRTA)', officialUrl: 'https://bsp.brta.gov.bd', contactPhone: '16107', agencyType: 'Agency' },
+  { slug: 'br-rail', nameBn: 'বাংলাদেশ রেলওয়ে', nameEn: 'Bangladesh Railway', officialUrl: 'https://eticket.railway.gov.bd', agencyType: 'Agency' },
+  { slug: 'nbr', nameBn: 'জাতীয় রাজস্ব বোর্ড (এনবিআর)', nameEn: 'National Board of Revenue (NBR)', officialUrl: 'https://secure.incometax.gov.bd', agencyType: 'Agency' },
+  { slug: 'rjsc', nameBn: 'যৌথমূলধন কোম্পানি ও ফার্মসমূহের পরিদপ্তর (আরজেএসসি)', nameEn: 'Registrar of Joint Stock Companies and Firms (RJSC)', officialUrl: 'https://app.roc.gov.bd', agencyType: 'Directorate' },
+  { slug: 'minland', nameBn: 'ভূমি মন্ত্রণালয়', nameEn: 'Ministry of Land', officialUrl: 'https://land.gov.bd', contactPhone: '16122', agencyType: 'Ministry' },
+  { slug: 'dghs', nameBn: 'স্বাস্থ্য অধিদপ্তর (ডিজিএইচএস)', nameEn: 'Directorate General of Health Services (DGHS)', officialUrl: 'https://dghs.gov.bd', contactPhone: '16263', agencyType: 'Directorate' },
+  { slug: 'dshe', nameBn: 'মাধ্যমিক ও উচ্চশিক্ষা অধিদপ্তর', nameEn: 'Directorate of Secondary and Higher Education', officialUrl: 'https://dshe.gov.bd', agencyType: 'Directorate' },
+  { slug: 'dss', nameBn: 'সমাজসেবা অধিদপ্তর', nameEn: 'Department of Social Services (DSS)', officialUrl: 'https://dss.gov.bd', agencyType: 'Directorate' },
+  { slug: 'bd-police', nameBn: 'বাংলাদেশ পুলিশ', nameEn: 'Bangladesh Police', officialUrl: 'https://pcc.police.gov.bd', contactPhone: '999', agencyType: 'Agency' },
+  { slug: 'cabinet-grs', nameBn: 'মন্ত্রিপরিষদ বিভাগ (অভিযোগ প্রতিকার ব্যবস্থা - GRS)', nameEn: 'Cabinet Division (Grievance Redress System - GRS)', officialUrl: 'https://www.grs.gov.bd', agencyType: 'Division' },
+  { slug: 'mygov', nameBn: 'মাইগভ (এটুআই / তথ্য ও যোগাযোগ প্রযুক্তি বিভাগ)', nameEn: 'myGov Bangladesh (a2i / ICT Division)', officialUrl: 'https://www.mygov.bd', contactPhone: '333', agencyType: 'Division' },
+  { slug: 'bmet', nameBn: 'জনশক্তি কর্মসংস্থান ও প্রশিক্ষণ ব্যুরো (বিএমইটি)', nameEn: 'Bureau of Manpower, Employment and Training (BMET)', officialUrl: 'https://www.amiprobashi.com', agencyType: 'Directorate' },
+  { slug: 'dae', nameBn: 'কৃষি সম্প্রসারণ অধিদপ্তর', nameEn: 'Department of Agricultural Extension (DAE)', officialUrl: 'https://dae.gov.bd', contactPhone: '16123', agencyType: 'Directorate' },
+  { slug: 'power-div', nameBn: 'বিদ্যুৎ বিভাগ (ডেসকো/ডিপিডিসি/পল্লী বিদ্যুৎ)', nameEn: 'Power Division (DESCO / DPDC / BREB)', officialUrl: 'https://powerdivision.gov.bd', agencyType: 'Division' },
+  { slug: 'wasa', nameBn: 'ঢাকা ও স্থানীয় ওয়াসা', nameEn: 'WASA (Water Supply & Sewerage Authority)', officialUrl: 'https://dwasa.org.bd', contactPhone: '16162', agencyType: 'LocalGov' },
+  { slug: 'lgd', nameBn: 'স্থানীয় সরকার বিভাগ (ইউনিয়ন পরিষদ / সিটি কর্পোরেশন)', nameEn: 'Local Government Division (UP / City Corporation)', officialUrl: 'https://prottoyon.gov.bd', agencyType: 'Division' },
+  { slug: 'dncrp', nameBn: 'জাতীয় ভোক্তা-অধিকার সংরক্ষণ অধিদপ্তর', nameEn: 'Directorate of National Consumer Rights Protection', officialUrl: 'https://dncrp.gov.bd', contactPhone: '16121', agencyType: 'Directorate' },
 ];
 
 export const HOTLINES_SEED: readonly HotlineSeed[] = [

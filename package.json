@@ -25,7 +25,8 @@
     "ai:lint": "uv run --directory apps/ai ruff check .",
     "ai:typecheck": "uv run --directory apps/ai mypy app",
     "doctor": "bash scripts/doctor.sh",
-    "clean": "turbo run clean && rm -rf node_modules"
+    "clean": "turbo run clean && rm -rf node_modules",
+    "admin:bootstrap": "tsx scripts/admin-bootstrap.ts"
   },
   "devDependencies": {
     "next": "^15.1.3",

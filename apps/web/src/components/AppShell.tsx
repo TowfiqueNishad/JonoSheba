@@ -23,6 +23,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
       <button
         type="button"
         aria-pressed={locale === 'bn'}
+        aria-label={locale === 'bn' ? 'বাংলা ভাষা (বর্তমানে সক্রিয়)' : 'বাংলা ভাষায় পরিবর্তন করুন'}
         onClick={() => switchLocale('bn')}
         lang="bn"
         className={`relative min-h-[44px] px-1.5 transition-colors duration-[400ms] ${
@@ -43,6 +44,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
       <button
         type="button"
         aria-pressed={locale === 'en'}
+        aria-label={locale === 'en' ? 'English language (currently active)' : 'Switch to English'}
         onClick={() => switchLocale('en')}
         lang="en"
         className={`relative min-h-[44px] px-1.5 uppercase transition-colors duration-[400ms] ${

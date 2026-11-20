@@ -612,3 +612,34 @@ html[data-reduced-motion='true'] *::after {
     padding: 0 !important;
   }
 }
+
+
+/* ═══════════════════════════════════════════════════════
+ * NOSTOS — Bangla Typography Corrections (Section 4.1)
+ * Bangla script does not use Latin letter-spacing.
+ * Any element in Bangla locale resets letter-spacing to normal.
+ * Latin tracked elements use .tracked utility.
+ * ═══════════════════════════════════════════════════════ */
+
+/* Reset letter-spacing for Bangla text everywhere */
+:lang(bn),
+[lang='bn'],
+[lang='bn-BD'],
+.bn {
+  letter-spacing: normal !important;
+  font-style: normal !important; /* No italic for Bangla — Cormorant Garamond only for Latin */
+}
+
+/* Latin tracked utility (use instead of arbitrary letter-spacing on Latin UI) */
+.tracked {
+  letter-spacing: 0.08em;
+}
+.tracked-wide {
+  letter-spacing: 0.16em;
+}
+
+/* Ensure Anek Bangla is never italicised */
+.font-anek-bangla,
+[class*='bangla'] {
+  font-style: normal;
+}

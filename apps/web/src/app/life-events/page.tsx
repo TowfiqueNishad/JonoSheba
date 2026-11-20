@@ -14,6 +14,26 @@ interface LifeEventBundle {
   categories: string[];
 }
 
+const CATEGORY_NAMES: Record<string, { bn: string; en: string }> = {
+  civil_registration: { bn: 'নাগরিক নিবন্ধন', en: 'Civil Registration' },
+  identity: { bn: 'পরিচয়পত্র', en: 'Identity' },
+  education: { bn: 'শিক্ষা', en: 'Education' },
+  transport: { bn: 'যাতায়াত ও পরিবহন', en: 'Transport' },
+  land: { bn: 'ভূমি ও রাজস্ব', en: 'Land & Revenue' },
+  health: { bn: 'স্বাস্থ্যসেবা', en: 'Healthcare' },
+  social_safety: { bn: 'সামাজিক নিরাপত্তা', en: 'Social Safety' },
+  business: { bn: 'ব্যবসা ও বাণিজ্য', en: 'Business' },
+  legal: { bn: 'আইন ও বিচার', en: 'Legal' },
+  utility: { bn: 'নাগরিক ইউটিলিটি', en: 'Utilities' },
+  general: { bn: 'সাধারণ সেবা', en: 'General' },
+};
+
+function formatCategories(cats: string[], loc: 'bn' | 'en'): string {
+  return cats
+    .map((c) => CATEGORY_NAMES[c]?.[loc] ?? c.replace(/_/g, ' '))
+    .join(' · ');
+}
+
 export default function LifeEventsPage() {
   const { locale, dict, localePath } = useLocale();
   const [items, setItems] = useState<LifeEventBundle[]>([]);
@@ -53,7 +73,7 @@ export default function LifeEventsPage() {
                       {locale === 'bn' ? ev.titleBn : ev.titleEn}
                     </h2>
                     <p className="nostos-editorial-italic mt-0.5 text-xs text-[var(--text-muted)]">
-                      {ev.categories.join(' · ')}
+                      {formatCategories(ev.categories, locale)}
                     </p>
                   </div>
                 </div>

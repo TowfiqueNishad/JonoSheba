@@ -112,7 +112,7 @@ export function classifyJonoIntent(
   return 'service_question';
 }
 
-/** Rewrites a context-dependent follow-up ("ফি কত?", "কি কি কাগজ লাগবে?") into a standalone query */
+/** Rewrites a context-dependent follow-up ("ফি কত?", "কি কি কাগজ লাগবে?", "এর সময় কত লাগে?") into a standalone query */
 export function rewriteFollowUpQuery(
   rawMessage: string,
   ctx: SessionTopicContext,
@@ -123,7 +123,14 @@ export function rewriteFollowUpQuery(
       ? ctx.lastTopicBn || ctx.lastTopicEn || ctx.lastServiceSlug || ''
       : ctx.lastTopicEn || ctx.lastTopicBn || ctx.lastServiceSlug || '';
   if (!topic) return rawMessage;
-  return `${topic} — ${rawMessage.trim()}`;
+
+  // Strip leading pronouns (এটার, এর, ওটার, তার, its, this) to produce natural search queries
+  const stripped = rawMessage
+    .trim()
+    .replace(/^(?:এটার?|এর|সেটার?|তার|ওটার?)\s+/i, '')
+    .replace(/^(?:its?|this)\s+/i, '');
+
+  return `${topic} ${stripped}`.trim();
 }
 
 export function buildSmallTalkResponse(

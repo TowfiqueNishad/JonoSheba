@@ -40,6 +40,20 @@ const OtpVerifySchema = z.object({
   guestUserId: z.string().uuid().optional(),
 });
 
+const EmailOtpRequestSchema = z.object({
+  email: z.string().email(),
+  locale: z.enum(['bn', 'en']).optional(),
+  turnstileToken: z.string().optional(),
+});
+
+const EmailOtpVerifySchema = z.object({
+  email: z.string().email(),
+  code: z.string().regex(/^\d{6}$/, 'Code must be 6 digits'),
+  deviceId: z.string().min(2).max(128).default('default-device'),
+  platform: PlatformEnum,
+  guestUserId: z.string().uuid().optional(),
+});
+
 const EmailRegisterSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8).max(128),
@@ -178,6 +192,46 @@ export class AuthController {
   ) {
     const bundle = await this.auth.verifyOtp({
       phone: body.phone,
+      code: body.code,
+      deviceId: body.deviceId,
+      platform: body.platform,
+      guestUserId: body.guestUserId,
+      ip: req.ip,
+      userAgent: req.headers['user-agent'],
+    });
+    setWebAuthCookies(res, bundle, body.platform);
+    return bundle;
+  }
+
+  @Post('api/v1/auth/email/otp/request')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Request 6-digit email OTP for passwordless login (bn: ইমেইলে ওটিপি কোড পাঠান)',
+  })
+  requestEmailOtp(
+    @Body(new ZodValidationPipe(EmailOtpRequestSchema)) body: z.infer<typeof EmailOtpRequestSchema>,
+    @Req() req: Request,
+  ) {
+    return this.auth.requestEmailOtp({
+      email: body.email,
+      locale: body.locale,
+      turnstileToken: body.turnstileToken,
+      ip: req.ip,
+    });
+  }
+
+  @Post('api/v1/auth/email/otp/verify')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Verify email OTP & issue session (bn: ইমেইল ওটিপি যাচাই ও লগইন)',
+  })
+  async verifyEmailOtp(
+    @Body(new ZodValidationPipe(EmailOtpVerifySchema)) body: z.infer<typeof EmailOtpVerifySchema>,
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const bundle = await this.auth.verifyEmailOtp({
+      email: body.email,
       code: body.code,
       deviceId: body.deviceId,
       platform: body.platform,
