@@ -94,8 +94,8 @@ body,
     system-ui,
     -apple-system,
     sans-serif;
-  font-size: 17px;
-  line-height: 1.65;
+  font-size: 15px;
+  line-height: 1.6;
   color: var(--text);
   background-color: var(--page);
   letter-spacing: 0.005em;
@@ -104,10 +104,10 @@ body,
 /* ── Typography Helpers ── */
 .nostos-overline {
   font-family: var(--font-montserrat, 'Montserrat'), system-ui, sans-serif;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.38em;
+  letter-spacing: 0.32em;
 }
 
 .nostos-display-h1 {

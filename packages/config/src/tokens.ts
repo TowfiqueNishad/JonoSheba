@@ -119,15 +119,15 @@ export const typography = {
   },
   fontSize: {
     meta: '0.6875rem', // 11px tracked uppercase
-    xs: '0.75rem',
-    sm: '0.875rem',
-    base: '1.0625rem', // 17px editorial body
-    lg: '1.1875rem',
-    xl: '1.375rem',
-    '2xl': '1.75rem',
-    '3xl': '2.75rem', // 44px section h2
-    '4xl': '3.25rem', // 52px section h2
-    hero: 'clamp(3rem, 6.4vw, 6rem)', // 48px -> 96px
+    xs: '0.75rem', // 12px
+    sm: '0.8125rem', // 13px
+    base: '0.9375rem', // 15px editorial body
+    lg: '1.0625rem', // 17px
+    xl: '1.25rem', // 20px
+    '2xl': '1.5rem', // 24px
+    '3xl': '1.875rem', // 30px section h2
+    '4xl': '2.25rem', // 36px section h2
+    hero: 'clamp(1.6rem, 4vw, 2.75rem)', // 26px -> 44px
   },
   lineHeight: {
     display: 1.06,

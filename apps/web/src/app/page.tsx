@@ -294,18 +294,18 @@ export default function HomePage() {
                 ? 'সকল সরকারি সেবা, এক ঠিকানায় (ALL PUBLIC SERVICES · ONE DESTINATION)'
                 : 'ALL PUBLIC SERVICES · ONE DESTINATION'
             }
-            className="nostos-overline text-[10px] sm:text-xs text-[var(--accent)]"
+            className="nostos-overline text-[9px] text-[var(--accent)] sm:text-[10px]"
           >
             ALL PUBLIC SERVICES · ONE DESTINATION
           </p>
 
-          <h1 className="nostos-display-h1 mt-4 text-[clamp(2rem,6vw,4.5rem)] leading-[1.15] text-[var(--hero-text)] sm:mt-5">
+          <h1 className="nostos-display-h1 mt-3 text-[clamp(1.6rem,4vw,2.75rem)] leading-[1.12] text-[var(--hero-text)] sm:mt-4">
             {locale === 'bn'
               ? 'সব সরকারি সেবা। এক ঠিকানায়।'
               : 'Every Public Service. One Harbour.'}
           </h1>
 
-          <p className="nostos-editorial-italic mt-2.5 max-w-2xl text-sm leading-relaxed text-[var(--hero-muted)] sm:mt-4 sm:text-lg lg:text-xl">
+          <p className="nostos-editorial-italic mt-2 max-w-2xl text-xs leading-relaxed text-[var(--hero-muted)] sm:mt-3 sm:text-sm md:text-base">
             {locale === 'bn'
               ? 'যাত্রা যতই দীর্ঘ হোক — পথ দেখাবে জনসেবা।'
               : 'However long the voyage home — Jonoshheba lights the way.'}
@@ -509,10 +509,10 @@ export default function HomePage() {
                   </span>
                 </div>
 
-                <div className="relative z-10 mt-8 transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:-translate-y-1">
-                  <h3 className="text-xl font-semibold text-[var(--text)]">{m.title}</h3>
+                <div className="relative z-10 mt-6 transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:-translate-y-1 sm:mt-8">
+                  <h3 className="text-base font-semibold text-[var(--text)] sm:text-lg">{m.title}</h3>
                   {m.metric ? (
-                    <p className="nostos-editorial-italic mt-1 text-sm text-[var(--text-muted)]">
+                    <p className="nostos-editorial-italic mt-1 text-xs text-[var(--text-muted)] sm:text-sm">
                       {m.metric}
                     </p>
                   ) : (
@@ -574,7 +574,7 @@ export default function HomePage() {
               </div>
 
               <div className="flex flex-col items-start justify-center space-y-4 lg:col-span-5">
-                <p className="nostos-editorial-italic text-xl text-[var(--text)]">
+                <p className="nostos-editorial-italic text-base text-[var(--text)] sm:text-lg">
                   {locale === 'bn'
                     ? 'পাসপোর্ট, ট্রেনের সময়সূচি, ভাতা কিংবা মন্ত্রণালয়ের অফিস নম্বর — সরাসরি জনো-কে জিজ্ঞাসা করুন।'
                     : 'Ask about passports, train schedules, allowances, or ministry office numbers in Bangla or English.'}

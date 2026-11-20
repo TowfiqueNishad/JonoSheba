@@ -147,11 +147,11 @@ export function FilmPlateBanner({
 
         <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-3xl">
-            <h1 className="nostos-display-h1 text-[clamp(2rem,4.2vw,3.4rem)] text-[var(--hero-text)]">
+            <h1 className="nostos-display-h1 text-[clamp(1.5rem,3.2vw,2.25rem)] text-[var(--hero-text)]">
               {title}
             </h1>
             {subtitle && (
-              <p className="nostos-editorial-italic mt-2 text-lg text-[var(--hero-muted)]">
+              <p className="nostos-editorial-italic mt-1.5 text-sm text-[var(--hero-muted)] sm:text-base">
                 {subtitle}
               </p>
             )}
@@ -184,22 +184,22 @@ export function ChapterHeading({
   action?: ReactNode;
 }) {
   return (
-    <div className="mb-8 flex flex-wrap items-end justify-between gap-4 border-b border-[var(--hair)] pb-4">
+    <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-[var(--hair)] pb-3 sm:mb-8 sm:pb-4">
       <div>
-        <div className="flex items-center gap-2.5">
-          <span className="nostos-editorial-italic text-base tracking-[0.14em] text-[var(--gold)]">
+        <div className="flex items-center gap-2">
+          <span className="nostos-editorial-italic text-sm tracking-[0.14em] text-[var(--gold)] sm:text-base">
             {roman}
           </span>
           <span aria-hidden="true" className="text-[var(--hair)]">
             —
           </span>
-          <span className="nostos-overline text-[var(--accent)]">{overline}</span>
+          <span className="nostos-overline text-[9px] text-[var(--accent)] sm:text-[10px]">{overline}</span>
         </div>
-        <h2 className="nostos-display-h2 mt-2 text-[clamp(1.75rem,3.2vw,2.75rem)] text-[var(--text)]">
+        <h2 className="nostos-display-h2 mt-1.5 text-[clamp(1.25rem,2.4vw,1.85rem)] text-[var(--text)]">
           {title}
         </h2>
         {subtitle && (
-          <p className="nostos-editorial-italic mt-1 text-base text-[var(--text-muted)]">
+          <p className="nostos-editorial-italic mt-1 text-xs text-[var(--text-muted)] sm:text-sm">
             {subtitle}
           </p>
         )}
