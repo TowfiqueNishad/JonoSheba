@@ -137,6 +137,12 @@ body,
   outline-offset: 4px;
 }
 
+/* ── Selection High Contrast ── */
+::selection {
+  background-color: var(--gold);
+  color: #050709;
+}
+
 /* ── Cinematic Film Plate Layers ── */
 .nostos-film-plate {
   background: var(--sky);

@@ -1,6 +1,13 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
+  outputFileTracingRoot: path.join(path.dirname(fileURLToPath(import.meta.url)), '../../'),
+  outputFileTracingIncludes: {
+    '/api/**/*': ['../../data/**/*', '../api/dist/**/*', '../api/prisma/**/*'],
+  },
   transpilePackages: ['@jonoshheba/shared', '@jonoshheba/config', '@jonoshheba/ui', '@jonoshheba/sdk'],
   webpack: (config, { isServer }) => {
     if (isServer) {

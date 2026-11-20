@@ -116,7 +116,7 @@ function StationCombobox({
 
   return (
     <div className="relative">
-      <label htmlFor={id} className="block text-xs font-bold text-slate-700">
+      <label htmlFor={id} className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
         {label}
       </label>
       <input
@@ -136,48 +136,55 @@ function StationCombobox({
           setSearch('');
           setOpen(true);
         }}
-        onBlur={() => setTimeout(() => setOpen(false), 180)}
+        onBlur={() => setTimeout(() => setOpen(false), 200)}
         onChange={(e) => {
           setSearch(e.target.value);
           setOpen(true);
         }}
         placeholder={placeholder}
-        className="mt-1 min-h-[44px] w-full rounded-xl border border-slate-300 bg-white px-3 text-sm text-slate-900"
+        className="mt-1 min-h-[44px] w-full rounded-xl border border-[var(--hair)] bg-[var(--field)] px-3 text-sm text-[var(--text)] placeholder-[var(--text-muted)] focus:border-[var(--gold)] focus:outline-none"
       />
       {open && (
         <div
           id={`${id}-listbox`}
           role="listbox"
-          className="absolute z-30 mt-1 max-h-64 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg"
+          className="absolute z-50 mt-1 max-h-64 w-full overflow-y-auto rounded-xl border border-[var(--hair)] bg-[var(--surface)] p-1.5 shadow-2xl backdrop-blur-md"
         >
           {grouped.length === 0 ? (
-            <p className="p-2 text-xs text-slate-500">
+            <p className="p-2 text-xs text-[var(--text-muted)]">
               {locale === 'bn' ? 'কোনো স্টেশন মেলেনি' : 'No matching stations'}
             </p>
           ) : (
             grouped.map(([div, list]) => (
               <div key={div} className="mb-1">
-                <p className="px-2 py-1 text-[11px] font-extrabold uppercase text-slate-500">{div}</p>
-                {list.map((st) => (
-                  <button
-                    key={st.code}
-                    type="button"
-                    role="option"
-                    aria-selected={st.code === value}
-                    onMouseDown={() => {
-                      onChange(st.code);
-                      setOpen(false);
-                    }}
-                    className={`flex w-full items-center justify-between border-b border-[var(--hair-soft)] px-3 py-2 text-left text-sm transition-colors ${
-                      st.code === value
-                        ? 'border-l-2 border-l-[var(--gold)] bg-[var(--surface-2)] font-bold text-[var(--gold)]'
-                        : 'text-[var(--text)] hover:bg-[var(--surface-2)] hover:text-[var(--gold)]'
-                    }`}
-                  >
-                    <span>{locale === 'bn' ? st.nameBn : st.nameEn}</span>
-                    <span className="font-mono text-xs text-[var(--text-muted)]">{st.code}</span>
-                  </button>
-                ))}
+                <p className="px-2 py-1 text-[11px] font-mono font-bold tracking-wider uppercase text-[var(--text-muted)]">{div}</p>
+                {list.map((st) => {
+                  const isSelected = st.code === value;
+                  return (
+                    <button
+                      key={st.code}
+                      type="button"
+                      role="option"
+                      aria-selected={isSelected}
+                      onMouseDown={() => {
+                        onChange(st.code);
+                        setOpen(false);
+                      }}
+                      className={`flex w-full items-center justify-between rounded-lg border-b border-[var(--hair-soft)] px-3 py-2 text-left text-sm transition-colors ${
+                        isSelected
+                          ? 'bg-[var(--gold)] text-[#050709] font-bold shadow-sm'
+                          : 'text-[var(--text)] hover:bg-[var(--surface-2)] hover:text-[var(--gold)]'
+                      }`}
+                    >
+                      <span className={isSelected ? 'text-[#050709] font-bold' : 'text-[var(--text)]'}>
+                        {locale === 'bn' ? st.nameBn : st.nameEn}
+                      </span>
+                      <span className={`font-mono text-xs ${isSelected ? 'text-[#050709]/80 font-bold' : 'text-[var(--text-muted)]'}`}>
+                        {st.code}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             ))
           )}
@@ -394,7 +401,7 @@ export default function TransportPage() {
       {/* RAIL TAB */}
       {tab === 'rail' && (
         <div className="space-y-4">
-          <div className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-[1fr_auto_1fr_1fr]">
+          <div className="grid gap-3 rounded-2xl border border-[var(--hair)] bg-[var(--surface)] p-4 shadow-sm sm:grid-cols-[1fr_auto_1fr_1fr]">
             <StationCombobox
               id="rail-from"
               label={dict.transport.fromStation}
@@ -412,7 +419,7 @@ export default function TransportPage() {
                   setFromCode(toCode);
                   setToCode(fromCode);
                 }}
-                className="min-h-[44px] min-w-[44px] rounded-xl border border-slate-300 bg-slate-50 font-bold text-slate-800 hover:bg-emerald-50"
+                className="min-h-[44px] min-w-[44px] rounded-xl border border-[var(--hair)] bg-[var(--surface-2)] font-bold text-[var(--gold)] hover:border-[var(--gold)]"
               >
                 ⇄
               </button>
@@ -427,7 +434,7 @@ export default function TransportPage() {
               locale={locale}
             />
             <div>
-              <label htmlFor="rail-date" className="block text-xs font-bold text-slate-700">
+              <label htmlFor="rail-date" className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                 {dict.transport.journeyDate}
               </label>
               <input
@@ -435,7 +442,7 @@ export default function TransportPage() {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="mt-1 min-h-[44px] w-full rounded-xl border border-slate-300 bg-white px-3 text-sm"
+                className="mt-1 min-h-[44px] w-full rounded-xl border border-[var(--hair)] bg-[var(--field)] px-3 text-sm text-[var(--text)] focus:border-[var(--gold)] focus:outline-none"
               />
             </div>
           </div>
@@ -443,7 +450,7 @@ export default function TransportPage() {
           {/* Sort & Class Filter */}
           <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className="font-bold text-slate-700">
+              <span className="font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                 {locale === 'bn' ? 'সাজান:' : 'Sort by:'}
               </span>
               {[
@@ -455,10 +462,10 @@ export default function TransportPage() {
                   key={s.id}
                   type="button"
                   onClick={() => setSortBy(s.id)}
-                  className={`min-h-[34px] rounded-lg px-2.5 font-bold ${
+                  className={`min-h-[34px] rounded-lg px-2.5 font-bold transition-colors ${
                     sortBy === s.id
-                      ? 'bg-emerald-700 text-white'
-                      : 'border border-slate-300 bg-white text-slate-700'
+                      ? 'bg-[var(--gold)] text-[#050709]'
+                      : 'border border-[var(--hair)] bg-[var(--surface)] text-[var(--text-muted)] hover:text-[var(--text)]'
                   }`}
                 >
                   {locale === 'bn' ? s.bn : s.en}
@@ -466,7 +473,7 @@ export default function TransportPage() {
               ))}
             </div>
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className="font-bold text-slate-700">
+              <span className="font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                 {locale === 'bn' ? 'আসন শ্রেণি:' : 'Seat class:'}
               </span>
               {['', 'S_CHAIR', 'SNIGDHA', 'AC_S', 'AC_B'].map((cls) => (
@@ -474,10 +481,10 @@ export default function TransportPage() {
                   key={cls || 'all'}
                   type="button"
                   onClick={() => setClassFilter(cls)}
-                  className={`min-h-[34px] rounded-lg px-2.5 font-bold ${
+                  className={`min-h-[34px] rounded-lg px-2.5 font-bold transition-colors ${
                     classFilter === cls
-                      ? 'bg-emerald-700 text-white'
-                      : 'border border-slate-300 bg-white text-slate-700'
+                      ? 'bg-[var(--gold)] text-[#050709]'
+                      : 'border border-[var(--hair)] bg-[var(--surface)] text-[var(--text-muted)] hover:text-[var(--text)]'
                   }`}
                 >
                   {cls ? getSeatClassLabel(cls, locale) : locale === 'bn' ? 'সব' : 'All'}
@@ -510,19 +517,19 @@ export default function TransportPage() {
                   key={tr.number}
                   className={`rounded-2xl border p-4 shadow-sm transition ${
                     tr.runsOnDate
-                      ? 'border-slate-200 bg-white'
-                      : 'border-slate-300 bg-slate-100 opacity-75'
+                      ? 'border-[var(--hair)] bg-[var(--surface)]'
+                      : 'border-[var(--hair)] bg-[var(--surface-2)] opacity-70'
                   }`}
                 >
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div>
-                      <h2 className="text-lg font-extrabold text-slate-900">
+                      <h2 className="text-lg font-bold text-[var(--hero-text)]">
                         <Link
                           href={localePath(`/transport/trains/${tr.number}`)}
-                          className="hover:text-emerald-800 hover:underline"
+                          className="hover:text-[var(--gold)] hover:underline"
                         >
                           {locale === 'bn' ? tr.nameBn : tr.nameEn}{' '}
-                          <span className="text-sm font-semibold text-slate-600">
+                          <span className="text-sm font-semibold text-[var(--text-muted)]">
                             ({formatDigits(tr.number, locale)})
                           </span>
                         </Link>
@@ -549,38 +556,38 @@ export default function TransportPage() {
                       </div>
                     </div>
 
-                    {/* Split Trust vs Seat Availability Badges (Finding U6) */}
+                    {/* Split Trust vs Seat Availability Badges */}
                     <div className="flex flex-wrap gap-1.5 text-xs font-semibold">
-                      <span className="rounded-full border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-emerald-950">
+                      <span className="rounded-full border border-[var(--gold-line)] bg-[var(--surface-2)] px-2.5 py-1 text-[var(--gold)]">
                         {dict.transport.officialTimetable}
                         {timetableVersion ? ` · ${timetableVersion}` : ''}
                       </span>
-                      <span className="rounded-full border border-slate-300 bg-slate-100 px-2.5 py-1 text-slate-800">
+                      <span className="rounded-full border border-[var(--hair)] bg-[var(--surface-2)] px-2.5 py-1 text-[var(--text-muted)]">
                         {dict.transport.seatInfoUnknown}
                       </span>
                     </div>
                   </div>
 
                   {!tr.runsOnDate && (
-                    <p className="mt-2 rounded-lg bg-red-50 px-3 py-1.5 text-xs font-bold text-red-800">
+                    <p className="mt-2 rounded-lg border border-red-500/30 bg-red-950/20 px-3 py-1.5 text-xs font-bold text-red-400">
                       {dict.transport.offDayWarning}
                     </p>
                   )}
 
-                  {/* Localized Seat Classes & Estimated Official Fares (Finding U5) */}
+                  {/* Localized Seat Classes & Estimated Official Fares */}
                   <div className="mt-3 flex flex-wrap gap-2">
                     {tr.classes.map((cls) => (
                       <div
                         key={cls.seatClass}
-                        className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs"
+                        className="rounded-lg border border-[var(--hair)] bg-[var(--surface-2)] px-3 py-1.5 text-xs"
                       >
-                        <span className="font-bold text-slate-900">
+                        <span className="font-bold text-[var(--text)]">
                           {getSeatClassLabel(cls.seatClass, locale)}
                         </span>
-                        <span className="ml-2 text-emerald-900 font-semibold">
+                        <span className="ml-2 font-semibold text-[var(--gold)]">
                           {formatBdt(cls.estimatedOfficialFareBdt, locale)}
                         </span>
-                        <span className="ml-1 text-[11px] text-slate-600">
+                        <span className="ml-1 text-[11px] text-[var(--text-muted)]">
                           ({dict.transport.estimatedFare})
                         </span>
                       </div>
@@ -592,20 +599,20 @@ export default function TransportPage() {
                       href={tr.officialBookingUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-h-[44px] items-center rounded-xl bg-emerald-700 px-4 text-xs font-extrabold text-white hover:bg-emerald-800"
+                      className="inline-flex min-h-[44px] items-center rounded-xl bg-[var(--gold)] px-4 text-xs font-extrabold text-[#050709] hover:opacity-90"
                     >
                       {dict.transport.continueOfficial} →
                     </a>
                     <button
                       type="button"
                       onClick={() => void createTicketWatch(tr)}
-                      className="inline-flex min-h-[44px] items-center rounded-xl border border-emerald-700 px-4 text-xs font-bold text-emerald-900 hover:bg-emerald-50"
+                      className="inline-flex min-h-[44px] items-center rounded-xl border border-[var(--gold-line)] px-4 text-xs font-bold text-[var(--gold)] hover:bg-[var(--surface-2)]"
                     >
                       {dict.transport.watchTrain}
                     </button>
                     <Link
                       href={localePath(`/transport/trains/${tr.number}`)}
-                      className="inline-flex min-h-[44px] items-center rounded-xl border border-slate-300 bg-white px-4 text-xs font-bold text-slate-800 hover:bg-slate-100"
+                      className="inline-flex min-h-[44px] items-center rounded-xl border border-[var(--hair)] bg-[var(--surface-2)] px-4 text-xs font-bold text-[var(--text)] hover:border-[var(--gold-line)]"
                     >
                       {locale === 'bn' ? 'সকল বিরতি ও মানচিত্র →' : 'All Stops & Map →'}
                     </Link>
@@ -620,38 +627,38 @@ export default function TransportPage() {
       {/* METRO & TOLLS TAB */}
       {tab === 'metro' && (
         <div className="grid gap-4 lg:grid-cols-2">
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-extrabold text-slate-900">{dict.transport.metroFareTitle}</h2>
+          <section className="rounded-2xl border border-[var(--hair)] bg-[var(--surface)] p-5 shadow-sm">
+            <h2 className="text-lg font-bold text-[var(--hero-text)]">{dict.transport.metroFareTitle}</h2>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div>
-                <label htmlFor="metro-from" className="block text-xs font-bold text-slate-700">
+                <label htmlFor="metro-from" className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                   {dict.transport.fromStation}
                 </label>
                 <select
                   id="metro-from"
                   value={metroFrom}
                   onChange={(e) => setMetroFrom(e.target.value)}
-                  className="mt-1 min-h-[44px] w-full rounded-xl border border-slate-300 bg-white px-3 text-sm"
+                  className="mt-1 min-h-[44px] w-full rounded-xl border border-[var(--hair)] bg-[var(--field)] px-3 text-sm text-[var(--text)]"
                 >
                   {metroStations.map((s) => (
-                    <option key={s.code} value={s.code}>
+                    <option key={s.code} value={s.code} className="bg-[var(--surface)] text-[var(--text)]">
                       {locale === 'bn' ? s.nameBn : s.nameEn}
                     </option>
                   ))}
                 </select>
               </div>
               <div>
-                <label htmlFor="metro-to" className="block text-xs font-bold text-slate-700">
+                <label htmlFor="metro-to" className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                   {dict.transport.toStation}
                 </label>
                 <select
                   id="metro-to"
                   value={metroTo}
                   onChange={(e) => setMetroTo(e.target.value)}
-                  className="mt-1 min-h-[44px] w-full rounded-xl border border-slate-300 bg-white px-3 text-sm"
+                  className="mt-1 min-h-[44px] w-full rounded-xl border border-[var(--hair)] bg-[var(--field)] px-3 text-sm text-[var(--text)]"
                 >
                   {metroStations.map((s) => (
-                    <option key={s.code} value={s.code}>
+                    <option key={s.code} value={s.code} className="bg-[var(--surface)] text-[var(--text)]">
                       {locale === 'bn' ? s.nameBn : s.nameEn}
                     </option>
                   ))}
@@ -659,27 +666,27 @@ export default function TransportPage() {
               </div>
             </div>
             {metroFare && (
-              <div className="mt-4 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-950">
-                <p className="font-extrabold">
+              <div className="mt-4 rounded-xl border border-[var(--hair)] bg-[var(--surface-2)] p-4 text-sm text-[var(--text)]">
+                <p className="font-extrabold text-[var(--gold)]">
                   {dict.transport.singleJourney}: {formatBdt(metroFare.singleJourneyFareBdt, locale)}
                 </p>
-                <p className="mt-1 font-semibold">
+                <p className="mt-1 font-semibold text-[var(--text)]">
                   {dict.transport.rapidPass}: {formatBdt(metroFare.mrtOrRapidPassFareBdt, locale)}
                 </p>
               </div>
             )}
           </section>
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-extrabold text-slate-900">{dict.transport.tollsTitle}</h2>
+          <section className="rounded-2xl border border-[var(--hair)] bg-[var(--surface)] p-5 shadow-sm">
+            <h2 className="text-lg font-bold text-[var(--hero-text)]">{dict.transport.tollsTitle}</h2>
             <div className="mt-3 space-y-3">
               {tolls.map((t) => (
-                <div key={t.code} className="rounded-xl border border-slate-100 bg-slate-50 p-3">
-                  <p className="font-bold text-slate-900">{locale === 'bn' ? t.nameBn : t.nameEn}</p>
+                <div key={t.code} className="rounded-xl border border-[var(--hair)] bg-[var(--surface-2)] p-3">
+                  <p className="font-bold text-[var(--hero-text)]">{locale === 'bn' ? t.nameBn : t.nameEn}</p>
                   <div className="mt-2 flex flex-wrap gap-1.5 text-xs">
                     {Object.entries(t.ratesBdt).map(([k, v]) => (
-                      <span key={k} className="rounded bg-white px-2 py-0.5 border border-slate-200">
-                        {k.replace(/_/g, ' ')}: {formatBdt(v, locale)}
+                      <span key={k} className="rounded border border-[var(--hair)] bg-[var(--surface)] px-2 py-0.5 text-[var(--text-muted)]">
+                        {k.replace(/_/g, ' ')}: <strong className="text-[var(--gold)]">{formatBdt(v, locale)}</strong>
                       </span>
                     ))}
                   </div>
@@ -693,11 +700,11 @@ export default function TransportPage() {
       {/* BUS TAB */}
       {tab === 'bus' && (
         <div className="space-y-4">
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-extrabold text-slate-900">{dict.transport.busFareTitle}</h2>
+          <section className="rounded-2xl border border-[var(--hair)] bg-[var(--surface)] p-5 shadow-sm">
+            <h2 className="text-lg font-bold text-[var(--hero-text)]">{dict.transport.busFareTitle}</h2>
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <div>
-                <label htmlFor="bus-from" className="block text-xs font-bold text-slate-700">
+                <label htmlFor="bus-from" className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                   {dict.transport.fromStation}
                 </label>
                 <input
@@ -705,11 +712,11 @@ export default function TransportPage() {
                   type="text"
                   value={busFrom}
                   onChange={(e) => setBusFrom(e.target.value)}
-                  className="mt-1 min-h-[44px] w-full rounded-xl border border-slate-300 px-3 text-sm"
+                  className="mt-1 min-h-[44px] w-full rounded-xl border border-[var(--hair)] bg-[var(--field)] px-3 text-sm text-[var(--text)]"
                 />
               </div>
               <div>
-                <label htmlFor="bus-to" className="block text-xs font-bold text-slate-700">
+                <label htmlFor="bus-to" className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                   {dict.transport.toStation}
                 </label>
                 <input
@@ -717,27 +724,27 @@ export default function TransportPage() {
                   type="text"
                   value={busTo}
                   onChange={(e) => setBusTo(e.target.value)}
-                  className="mt-1 min-h-[44px] w-full rounded-xl border border-slate-300 px-3 text-sm"
+                  className="mt-1 min-h-[44px] w-full rounded-xl border border-[var(--hair)] bg-[var(--field)] px-3 text-sm text-[var(--text)]"
                 />
               </div>
             </div>
             {busEstimate && (
-              <p className="mt-3 rounded-xl bg-emerald-50 p-3 text-sm font-bold text-emerald-950">
+              <p className="mt-3 rounded-xl border border-[var(--hair)] bg-[var(--surface-2)] p-3 text-sm font-bold text-[var(--gold)]">
                 {formatDigits(busEstimate.distanceKm, locale)} km · {dict.transport.estimatedFare}:{' '}
                 {formatBdt(busEstimate.officialFareEstimateBdt, locale)}
               </p>
             )}
           </section>
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-base font-extrabold text-slate-900">
+          <section className="rounded-2xl border border-[var(--hair)] bg-[var(--surface)] p-5 shadow-sm">
+            <h2 className="text-base font-bold text-[var(--hero-text)]">
               {dict.transport.busTerminalsTitle} ({formatDigits(busTerminals.length, locale)})
             </h2>
             <div className="mt-3 grid max-h-72 gap-2 overflow-y-auto sm:grid-cols-2 lg:grid-cols-3">
               {busTerminals.slice(0, 60).map((bt) => (
-                <div key={bt.code} className="rounded-lg border border-slate-200 p-2.5 text-xs">
-                  <p className="font-bold text-slate-900">{locale === 'bn' ? bt.nameBn : bt.nameEn}</p>
-                  <p className="text-slate-600">{bt.districtEn}</p>
+                <div key={bt.code} className="rounded-lg border border-[var(--hair)] bg-[var(--surface-2)] p-2.5 text-xs">
+                  <p className="font-bold text-[var(--text)]">{locale === 'bn' ? bt.nameBn : bt.nameEn}</p>
+                  <p className="text-[var(--text-muted)]">{bt.districtEn}</p>
                 </div>
               ))}
             </div>
@@ -748,18 +755,18 @@ export default function TransportPage() {
       {/* WATER & AIR TAB */}
       {tab === 'water' && (
         <div className="grid gap-4 lg:grid-cols-2">
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-extrabold text-slate-900">{dict.transport.waterTitle}</h2>
+          <section className="rounded-2xl border border-[var(--hair)] bg-[var(--surface)] p-5 shadow-sm">
+            <h2 className="text-lg font-bold text-[var(--hero-text)]">{dict.transport.waterTitle}</h2>
             <div className="mt-3 space-y-2.5">
               {waterRoutes.map((w) => (
-                <div key={w.id} className="rounded-xl border border-slate-200 p-3 text-sm">
-                  <p className="font-bold text-slate-900">{locale === 'bn' ? w.nameBn : w.nameEn}</p>
+                <div key={w.id} className="rounded-xl border border-[var(--hair)] bg-[var(--surface-2)] p-3 text-sm">
+                  <p className="font-bold text-[var(--text)]">{locale === 'bn' ? w.nameBn : w.nameEn}</p>
                   {w.weatherWarningUrl && (
                     <a
                       href={w.weatherWarningUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-1 inline-block text-xs font-semibold text-emerald-800 underline"
+                      className="mt-1 inline-block text-xs font-semibold text-[var(--gold)] underline"
                     >
                       {locale === 'bn' ? 'আবহাওয়া ও নদীবন্দর সতর্কতা দেখুন →' : 'Check BMD river port warning →'}
                     </a>
@@ -768,13 +775,13 @@ export default function TransportPage() {
               ))}
             </div>
           </section>
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-lg font-extrabold text-slate-900">{dict.transport.airTitle}</h2>
+          <section className="rounded-2xl border border-[var(--hair)] bg-[var(--surface)] p-5 shadow-sm">
+            <h2 className="text-lg font-bold text-[var(--hero-text)]">{dict.transport.airTitle}</h2>
             <div className="mt-3 space-y-2.5">
               {airRoutes.map((a) => (
-                <div key={a.id} className="rounded-xl border border-slate-200 p-3 text-sm">
-                  <p className="font-bold text-slate-900">{locale === 'bn' ? a.routeBn : a.routeEn}</p>
-                  <p className="text-xs text-slate-600">{formatDuration(a.flightDurationMin, locale)}</p>
+                <div key={a.id} className="rounded-xl border border-[var(--hair)] bg-[var(--surface-2)] p-3 text-sm">
+                  <p className="font-bold text-[var(--text)]">{locale === 'bn' ? a.routeBn : a.routeEn}</p>
+                  <p className="text-xs text-[var(--text-muted)]">{formatDuration(a.flightDurationMin, locale)}</p>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {a.officialAirlineUrls.map((u) => (
                       <a
@@ -782,7 +789,7 @@ export default function TransportPage() {
                         href={u}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="rounded-lg bg-emerald-700 px-2.5 py-1 text-xs font-bold text-white"
+                        className="rounded-lg bg-[var(--gold)] px-2.5 py-1 text-xs font-bold text-[#050709] hover:opacity-90"
                       >
                         {u.replace(/^https?:\/\//, '')}
                       </a>
@@ -797,11 +804,11 @@ export default function TransportPage() {
 
       {/* JOURNEY PLANNER TAB */}
       {tab === 'planner' && (
-        <section className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h2 className="text-lg font-extrabold text-slate-900">{dict.transport.plannerTitle}</h2>
+        <section className="space-y-4 rounded-2xl border border-[var(--hair)] bg-[var(--surface)] p-5 shadow-sm">
+          <h2 className="text-lg font-bold text-[var(--hero-text)]">{dict.transport.plannerTitle}</h2>
           <form onSubmit={(e) => void runPlanner(e)} className="grid gap-3 sm:grid-cols-3">
             <div>
-              <label htmlFor="plan-from" className="block text-xs font-bold text-slate-700">
+              <label htmlFor="plan-from" className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                 {dict.transport.fromStation}
               </label>
               <input
@@ -809,11 +816,11 @@ export default function TransportPage() {
                 type="text"
                 value={planFrom}
                 onChange={(e) => setPlanFrom(e.target.value)}
-                className="mt-1 min-h-[44px] w-full rounded-xl border border-slate-300 px-3 text-sm"
+                className="mt-1 min-h-[44px] w-full rounded-xl border border-[var(--hair)] bg-[var(--field)] px-3 text-sm text-[var(--text)]"
               />
             </div>
             <div>
-              <label htmlFor="plan-to" className="block text-xs font-bold text-slate-700">
+              <label htmlFor="plan-to" className="block text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                 {dict.transport.toStation}
               </label>
               <input
@@ -821,13 +828,13 @@ export default function TransportPage() {
                 type="text"
                 value={planTo}
                 onChange={(e) => setPlanTo(e.target.value)}
-                className="mt-1 min-h-[44px] w-full rounded-xl border border-slate-300 px-3 text-sm"
+                className="mt-1 min-h-[44px] w-full rounded-xl border border-[var(--hair)] bg-[var(--field)] px-3 text-sm text-[var(--text)]"
               />
             </div>
             <div className="flex items-end">
               <button
                 type="submit"
-                className="min-h-[44px] w-full rounded-xl bg-emerald-700 px-4 text-sm font-bold text-white hover:bg-emerald-800"
+                className="min-h-[44px] w-full rounded-xl bg-[var(--gold)] px-4 text-sm font-bold text-[#050709] hover:opacity-90"
               >
                 {dict.transport.planButton}
               </button>
@@ -836,16 +843,16 @@ export default function TransportPage() {
           {itineraries.length > 0 && (
             <div className="grid gap-3 sm:grid-cols-2">
               {itineraries.map((it, idx) => (
-                <div key={idx} className="rounded-xl border border-slate-200 p-4 text-sm">
-                  <p className="font-bold text-slate-900">{it.labelBn}</p>
-                  <p className="mt-1 text-xs text-slate-700">
-                    {formatDuration(it.durationMin, locale)} · {formatBdt(it.estimatedFareBdt, locale)}
+                <div key={idx} className="rounded-xl border border-[var(--hair)] bg-[var(--surface-2)] p-4 text-sm">
+                  <p className="font-bold text-[var(--hero-text)]">{it.labelBn}</p>
+                  <p className="mt-1 text-xs text-[var(--text-muted)]">
+                    {formatDuration(it.durationMin, locale)} · <strong className="text-[var(--gold)]">{formatBdt(it.estimatedFareBdt, locale)}</strong>
                   </p>
                   <a
                     href={it.officialChannelUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-2 inline-block text-xs font-bold text-emerald-800 underline"
+                    className="mt-2 inline-block text-xs font-bold text-[var(--gold)] underline"
                   >
                     {dict.transport.continueOfficial} →
                   </a>
