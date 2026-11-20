@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Jonoshheba AI (জনসেবা AI)",
+    "slug": "jonoshheba",
+    "version": "0.1.0",
+    "scheme": "jonoshheba",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "android": {
+      "package": "app.jonoshheba.citizen",
+      "adaptiveIcon": {
+        "backgroundColor": "#0B6E4F"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "app.jonoshheba.citizen",
+      "supportsTablet": true
+    },
+    "extra": {
+      "independentDisclaimer": "Independent platform — not an official government service"
+    }
+  }
+}

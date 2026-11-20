@@ -1,0 +1,52 @@
+{
+  "iso2": "BD",
+  "name": {
+    "bn": "বাংলাদেশ",
+    "en": "Bangladesh"
+  },
+  "defaultLocale": "bn",
+  "supportedLocales": ["bn", "en"],
+  "timezone": "Asia/Dhaka",
+  "currency": "BDT",
+  "phoneCountryCode": "+880",
+  "adminLevels": ["division", "district", "upazila", "union_or_ward"],
+  "primaryEmergencyNumber": "999",
+  "hotlines": [
+    {
+      "number": "999",
+      "label": {
+        "bn": "জাতীয় জরুরি সেবা (পুলিশ, ফায়ার, অ্যাম্বুলেন্স)",
+        "en": "National Emergency Service (Police, Fire, Ambulance)"
+      },
+      "agency": "Bangladesh Police",
+      "sourceUrl": "https://nhd.gov.bd"
+    },
+    {
+      "number": "333",
+      "label": {
+        "bn": "সরকারি তথ্য ও সেবা হটলাইন",
+        "en": "National Info & Citizen Service Helpline"
+      },
+      "agency": "ICT Division / a2i",
+      "sourceUrl": "https://mygov.bd"
+    },
+    {
+      "number": "16263",
+      "label": {
+        "bn": "স্বাস্থ্য বাতায়ন (২৪/৭ স্বাস্থ্য পরামর্শ)",
+        "en": "Shastho Batayon (24/7 Health Helpline)"
+      },
+      "agency": "DGHS",
+      "sourceUrl": "https://dghs.gov.bd"
+    }
+  ],
+  "officialPortals": {
+    "citizenPortal": "https://www.mygov.bd",
+    "grievancePortal": "https://www.grs.gov.bd",
+    "railTicketingPortal": "https://eticket.railway.gov.bd"
+  },
+  "independentDisclaimer": {
+    "bn": "স্বাধীন প্ল্যাটফর্ম — এটি কোনো সরকারি সেবা নয়",
+    "en": "Independent platform — not an official government service"
+  }
+}

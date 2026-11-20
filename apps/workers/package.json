@@ -1,0 +1,30 @@
+{
+  "name": "@jonoshheba/workers",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsup src/main.ts --format esm --dts --clean",
+    "dev": "tsx watch src/main.ts",
+    "start": "node dist/main.js",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@jonoshheba/shared": "workspace:*",
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@jonoshheba/eslint-config": "workspace:*",
+    "@jonoshheba/tsconfig": "workspace:*",
+    "@types/node": "^22.10.2",
+    "eslint": "^9.16.0",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

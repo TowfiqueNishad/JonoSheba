@@ -1,0 +1,170 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jonoshheba-api
+  namespace: jonoshheba
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jonoshheba-api
+  template:
+    metadata:
+      labels:
+        app: jonoshheba-api
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: api
+          image: ghcr.io/jonoshheba/api:latest
+          ports:
+            - containerPort: 4000
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jonoshheba-api
+  namespace: jonoshheba
+spec:
+  selector:
+    app: jonoshheba-api
+  ports:
+    - port: 80
+      targetPort: 4000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jonoshheba-ai
+  namespace: jonoshheba
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jonoshheba-ai
+  template:
+    metadata:
+      labels:
+        app: jonoshheba-ai
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: ai
+          image: ghcr.io/jonoshheba/ai:latest
+          ports:
+            - containerPort: 8000
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2000m"
+              memory: "4Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jonoshheba-ai
+  namespace: jonoshheba
+spec:
+  type: ClusterIP
+  selector:
+    app: jonoshheba-ai
+  ports:
+    - port: 8000
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jonoshheba-web
+  namespace: jonoshheba
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jonoshheba-web
+  template:
+    metadata:
+      labels:
+        app: jonoshheba-web
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: web
+          image: ghcr.io/jonoshheba/web:latest
+          ports:
+            - containerPort: 3000
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          readinessProbe:
+            httpGet:
+              path: /lite
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: jonoshheba-api-hpa
+  namespace: jonoshheba
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: jonoshheba-api
+  minReplicas: 2
+  maxReplicas: 12
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

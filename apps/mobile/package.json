@@ -1,0 +1,27 @@
+{
+  "name": "@jonoshheba/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "node -e \"console.info('[jonoshheba-mobile] Expo scaffold ready (Phase 15 expands Expo Router runtime).')\"",
+    "build": "tsc --noEmit",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rm -rf .expo dist"
+  },
+  "dependencies": {
+    "@jonoshheba/config": "workspace:*",
+    "@jonoshheba/sdk": "workspace:*",
+    "@jonoshheba/shared": "workspace:*",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@jonoshheba/eslint-config": "workspace:*",
+    "@jonoshheba/tsconfig": "workspace:*",
+    "@types/node": "^22.10.2",
+    "eslint": "^9.16.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

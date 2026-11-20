@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ai-service-internal-only
+  namespace: jonoshheba
+spec:
+  podSelector:
+    matchLabels:
+      app: jonoshheba-ai
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: jonoshheba-api
+        - podSelector:
+            matchLabels:
+              app: jonoshheba-workers
+      ports:
+        - protocol: TCP
+          port: 8000

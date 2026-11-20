@@ -1,0 +1,42 @@
+{
+  "iso2": "NP",
+  "name": {
+    "ne": "नेपाल",
+    "en": "Nepal"
+  },
+  "defaultLocale": "ne",
+  "supportedLocales": ["ne", "en"],
+  "timezone": "Asia/Kathmandu",
+  "currency": "NPR",
+  "phoneCountryCode": "+977",
+  "adminLevels": ["province", "district", "municipality", "ward"],
+  "primaryEmergencyNumber": "100",
+  "hotlines": [
+    {
+      "number": "100",
+      "label": {
+        "ne": "नेपाल प्रहरी आपतकालीन सेवा",
+        "en": "Nepal Police Emergency"
+      },
+      "agency": "Nepal Police",
+      "sourceUrl": "https://nepalpolice.gov.np"
+    },
+    {
+      "number": "102",
+      "label": {
+        "ne": "एम्बुलेन्स सेवा",
+        "en": "Ambulance Emergency"
+      },
+      "agency": "Ministry of Health and Population",
+      "sourceUrl": "https://mohp.gov.np"
+    }
+  ],
+  "officialPortals": {
+    "citizenPortal": "https://nagarikapp.gov.np",
+    "grievancePortal": "https://gunaso.opmcm.gov.np"
+  },
+  "independentDisclaimer": {
+    "ne": "स्वतन्त्र प्लेटफर्म — यो आधिकारिक सरकारी सेवा होइन",
+    "en": "Independent platform — not an official government service"
+  }
+}

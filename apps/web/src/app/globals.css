@@ -1,0 +1,608 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * JONOSHHEBA AI — "NOSTOS" CINEMATIC DESIGN SYSTEM
+ * NIGHT: "Steel & Gold" (default after dark local time)
+ * DAY:   "Bleached Light" (overexposed sea-mist & sand)
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+:root,
+html[data-theme='night'] {
+  color-scheme: dark;
+  --font-anek-bangla: 'Anek Bangla', 'Noto Sans Bengali', 'Hind Siliguri', system-ui, sans-serif;
+  --font-montserrat: 'Montserrat', 'Helvetica Neue', 'Inter', system-ui, sans-serif;
+  --font-cormorant: 'Cormorant Garamond', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  --page: #050709;
+  --surface: #0a0f16;
+  --surface-2: #0e1824;
+  --text: #ece6da;
+  --text-muted: #9aa3ac;
+  --hero-text: #f1ece2;
+  --hero-muted: #a9b6c2;
+  --accent: #9cc3e6;
+  --gold: #d9b46c;
+  --gold-fill: #c9a45c;
+  --gold-line: rgba(217, 180, 108, 0.55);
+  --hair: rgba(236, 230, 218, 0.14);
+  --hair-soft: rgba(236, 230, 218, 0.07);
+  --field: rgba(5, 8, 12, 0.55);
+  --panel: rgba(6, 9, 13, 0.92);
+  --sky: linear-gradient(
+    180deg,
+    #020304 0%,
+    #06090e 30%,
+    #0c1520 58%,
+    #13212f 61%,
+    #0a121b 62%,
+    #05080c 100%
+  );
+  --sea: linear-gradient(180deg, #0b1621 0%, #070e15 40%, #040609 100%);
+  --celestial: radial-gradient(circle at 42% 40%, #f4f1ea, #d7dce0 45%, #9fb0be 80%);
+  --band: linear-gradient(120deg, #070b10 0%, #0e1824 55%, #16243a 100%);
+  --grain-opacity: 0.085;
+}
+
+html[data-theme='day'] {
+  color-scheme: light;
+  --page: #ece8e0;
+  --surface: #f6f2ea;
+  --surface-2: #e4dfd5;
+  --text: #14191f;
+  --text-muted: #4e5862;
+  --hero-text: #101820;
+  --hero-muted: #3b4a57;
+  --accent: #2e4a63;
+  --gold: #86642a;
+  --gold-fill: #735420;
+  --gold-line: rgba(134, 100, 42, 0.55);
+  --hair: rgba(20, 25, 31, 0.16);
+  --hair-soft: rgba(20, 25, 31, 0.07);
+  --field: rgba(246, 242, 234, 0.6);
+  --panel: rgba(246, 242, 234, 0.95);
+  --sky: linear-gradient(
+    180deg,
+    #c9d6df 0%,
+    #dce3e6 35%,
+    #eeeae1 58%,
+    #f6f1e6 61%,
+    #b9c7ce 62%,
+    #a9b9c2 100%
+  );
+  --sea: linear-gradient(180deg, #b7c6cd, #8ea2ad);
+  --celestial: radial-gradient(circle, #fffdf6, #fbf3dd 40%, transparent 70%);
+  --band: linear-gradient(120deg, #e6e1d6 0%, #dce3e6 55%, #c9d6df 100%);
+  --grain-opacity: 0.045;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--page);
+  color: var(--text);
+  transition:
+    background-color 1400ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 1400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body,
+.nostos-body {
+  font-family:
+    var(--font-anek-bangla, 'Anek Bangla'),
+    var(--font-montserrat, 'Montserrat'),
+    'Noto Sans Bengali',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--text);
+  background-color: var(--page);
+  letter-spacing: 0.005em;
+}
+
+/* ── Typography Helpers ── */
+.nostos-overline {
+  font-family: var(--font-montserrat, 'Montserrat'), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.38em;
+}
+
+.nostos-display-h1 {
+  font-family: var(--font-anek-bangla, 'Anek Bangla'), var(--font-montserrat, 'Montserrat'), sans-serif;
+  font-weight: 600;
+  font-stretch: 112%;
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+}
+
+.nostos-display-h2 {
+  font-family: var(--font-anek-bangla, 'Anek Bangla'), var(--font-montserrat, 'Montserrat'), sans-serif;
+  font-weight: 600;
+  font-stretch: 110%;
+  line-height: 1.08;
+}
+
+.nostos-editorial-italic {
+  font-family: var(--font-cormorant, 'Cormorant Garamond'), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ── WCAG 2.2 AA Visible Gold Focus Outline (1px + 4px offset) ── */
+:focus-visible {
+  outline: 1px solid var(--gold);
+  outline-offset: 4px;
+}
+
+/* ── Cinematic Film Plate Layers ── */
+.nostos-film-plate {
+  background: var(--sky);
+}
+
+.nostos-plate-backdrop {
+  background: var(--sky);
+}
+
+.nostos-horizon-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 60%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--gold-line) 22%,
+    rgba(241, 236, 226, 0.65) 50%,
+    var(--gold-line) 78%,
+    transparent 100%
+  );
+  opacity: 0.85;
+}
+
+.nostos-celestial {
+  display: none !important;
+}
+
+.nostos-water-path {
+  position: absolute;
+  top: 60%;
+  bottom: 0;
+  left: 50%;
+  width: 220px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(217, 180, 108, 0.22) 0%,
+    rgba(156, 195, 230, 0.08) 45%,
+    transparent 80%
+  );
+  animation: nostosWaterBreathe 9s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate;
+}
+
+.nostos-fog-layer-1 {
+  position: absolute;
+  inset: 35% -20% 10% -20%;
+  background: radial-gradient(
+    ellipse at 40% 50%,
+    rgba(156, 195, 230, 0.1) 0%,
+    transparent 70%
+  );
+  filter: blur(24px);
+  animation: nostosFogDrift 72s linear infinite alternate;
+}
+
+.nostos-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    transparent 35%,
+    rgba(2, 3, 4, 0.55) 100%
+  );
+}
+
+html[data-theme='day'] .nostos-vignette {
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    transparent 45%,
+    rgba(20, 25, 31, 0.18) 100%
+  );
+}
+
+/* ── Animated Fine Film Grain Overlay ── */
+.nostos-film-grain {
+  opacity: var(--grain-opacity);
+  background-image: radial-gradient(rgba(236, 230, 218, 0.45) 0.65px, transparent 0.65px),
+    radial-gradient(rgba(156, 195, 230, 0.35) 0.65px, transparent 0.65px);
+  background-size: 24px 24px;
+  background-position:
+    0 0,
+    12px 12px;
+  animation: nostosGrainShift 8s steps(6) infinite;
+}
+
+.nostos-grain-paused {
+  animation: none !important;
+}
+
+/* ── Left-Fill Gold Button & Drawn Hairline Links ── */
+.nostos-btn-gold {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid var(--gold-line);
+  border-radius: 2px;
+  padding: 0 1.25rem;
+  font-family: var(--font-montserrat, 'Montserrat'), var(--font-anek-bangla, 'Anek Bangla'), sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--text);
+  background: transparent;
+  background-image: linear-gradient(90deg, var(--gold) 0%, var(--gold) 100%);
+  background-size: 0% 100%;
+  background-repeat: no-repeat;
+  transition:
+    background-size 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nostos-btn-gold:hover {
+  background-size: 100% 100%;
+  color: #050709;
+}
+
+.nostos-btn-gold:active {
+  transform: scale(0.985);
+}
+
+.nostos-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-image: linear-gradient(90deg, var(--gold), var(--gold));
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition:
+    background-size 600ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nostos-link:hover {
+  background-size: 100% 1px;
+  color: var(--gold);
+}
+
+/* ── Editorial Row Hover (+18px slide, 900ms gold rule, +8px arrow) ── */
+.nostos-editorial-row {
+  position: relative;
+  border-bottom: 1px solid var(--hair);
+  background-image: linear-gradient(90deg, var(--gold), var(--gold));
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition:
+    transform 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-size 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nostos-editorial-row:hover {
+  transform: translateX(18px);
+  background-size: 100% 1px;
+}
+
+.nostos-editorial-row .nostos-row-arrow {
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nostos-editorial-row:hover .nostos-row-arrow {
+  transform: translateX(8px);
+  color: var(--gold);
+}
+
+/* ── Module Harbour Tiles (plate zoom 1.06 in 1.4s + inset 1px gold frame) ── */
+.nostos-harbour-tile {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--surface);
+  border: 1px solid var(--hair);
+  transition: border-color 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nostos-harbour-tile:hover {
+  border-color: var(--gold-line);
+}
+
+.nostos-harbour-plate {
+  transition:
+    transform 1400ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 1400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nostos-harbour-tile:hover .nostos-harbour-plate {
+  transform: scale(1.06);
+}
+
+/* ── Film-Develop Chat Message Animation (1.1s fade + unblur + 8px rise) ── */
+.nostos-chat-develop {
+  animation: nostosDevelop 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── Gold-Sheen Hairline Skeleton ── */
+.nostos-skeleton-sheen {
+  background: linear-gradient(
+    90deg,
+    var(--surface) 0%,
+    var(--hair) 45%,
+    rgba(217, 180, 108, 0.22) 50%,
+    var(--hair) 55%,
+    var(--surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: nostosSheen 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * UNIFIED NOSTOS SURFACE ADAPTER FOR INNER PAGES
+ * Ensures every inner page automatically inherits the Steel & Gold (Night)
+ * and Bleached Light (Day) hairline aesthetic with zero rounded bubbly cards
+ * and guaranteed >= 4.5:1 contrast.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+.nostos-body .rounded-2xl,
+.nostos-body .rounded-xl,
+.nostos-body .rounded-lg {
+  border-radius: 2px !important;
+}
+
+.nostos-body .bg-white,
+.nostos-body .bg-white\/95 {
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+}
+
+.nostos-body .bg-slate-50,
+.nostos-body .bg-slate-100,
+.nostos-body .bg-slate-200,
+.nostos-body .bg-emerald-50,
+.nostos-body .bg-emerald-100,
+.nostos-body .bg-sky-50,
+.nostos-body .bg-sky-100,
+.nostos-body .bg-amber-50,
+.nostos-body .bg-amber-100,
+.nostos-body .bg-amber-200,
+.nostos-body .bg-blue-50,
+.nostos-body .bg-blue-100,
+.nostos-body .hover\:bg-emerald-50:hover,
+.nostos-body .hover\:bg-emerald-100:hover,
+.nostos-body .hover\:bg-slate-50:hover,
+.nostos-body .hover\:bg-slate-100:hover,
+.nostos-body .hover\:bg-slate-200:hover,
+.nostos-body .hover\:bg-amber-100:hover {
+  background-color: var(--surface-2) !important;
+  color: var(--text) !important;
+}
+
+.nostos-body .border-slate-100,
+.nostos-body .border-slate-200,
+.nostos-body .border-slate-300,
+.nostos-body .border-emerald-200,
+.nostos-body .border-emerald-300,
+.nostos-body .border-sky-200 {
+  border-color: var(--hair) !important;
+}
+
+.nostos-body .border-amber-200,
+.nostos-body .border-amber-300,
+.nostos-body .border-emerald-400,
+.nostos-body .border-emerald-700,
+.nostos-body .hover\:border-emerald-400:hover {
+  border-color: var(--gold-line) !important;
+}
+
+.nostos-body .text-slate-900,
+.nostos-body .text-slate-950,
+.nostos-body .text-emerald-950,
+.nostos-body .text-amber-950,
+.nostos-body .text-sky-950 {
+  color: var(--text) !important;
+}
+
+.nostos-body .text-slate-800,
+.nostos-body .text-slate-700,
+.nostos-body .text-slate-600,
+.nostos-body .text-slate-500,
+.nostos-body .text-emerald-900,
+.nostos-body .text-amber-900 {
+  color: var(--text-muted) !important;
+}
+
+.nostos-body .text-emerald-800,
+.nostos-body .text-emerald-700,
+.nostos-body .hover\:text-emerald-800:hover,
+.nostos-body .hover\:text-emerald-950:hover {
+  color: var(--gold) !important;
+}
+
+.nostos-body .bg-emerald-700,
+.nostos-body .bg-emerald-800,
+.nostos-body .hover\:bg-emerald-800:hover {
+  background-color: var(--surface-2) !important;
+  border: 1px solid var(--gold-line) !important;
+  color: var(--text) !important;
+}
+
+.nostos-body .bg-emerald-700:hover,
+.nostos-body .bg-emerald-800:hover {
+  background-color: var(--gold) !important;
+  color: #050709 !important;
+}
+
+.nostos-body .bg-emerald-700:hover *,
+.nostos-body .bg-emerald-800:hover *,
+.nostos-btn-gold:hover * {
+  color: #050709 !important;
+}
+
+/* SAFETY RULE: Emergency #B3261E with white text is NEVER overridden */
+.nostos-body .bg-red-600,
+.nostos-body .bg-red-700,
+.nostos-emergency-999 {
+  background-color: #b3261e !important;
+  color: #ffffff !important;
+  border-color: #b3261e !important;
+}
+
+.nostos-body .bg-red-50 {
+  background-color: rgba(179, 38, 30, 0.14) !important;
+  color: var(--text) !important;
+}
+
+.nostos-body .text-red-700,
+.nostos-body .text-red-800,
+.nostos-body .text-red-900,
+.nostos-body .text-red-950 {
+  color: #e57368 !important;
+}
+
+html[data-theme='day'] .nostos-body .text-red-700,
+html[data-theme='day'] .nostos-body .text-red-800,
+html[data-theme='day'] .nostos-body .text-red-900,
+html[data-theme='day'] .nostos-body .text-red-950 {
+  color: #b3261e !important;
+}
+
+/* Inputs, Selects & Option Menus in NOSTOS theme */
+.nostos-body input,
+.nostos-body select,
+.nostos-body textarea {
+  background-color: var(--surface-2) !important;
+  color: var(--text) !important;
+  border-color: var(--hair) !important;
+  border-radius: 2px;
+  caret-color: var(--gold);
+}
+
+.nostos-body select option {
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+}
+
+.nostos-body input::placeholder,
+.nostos-body textarea::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 0.85;
+}
+
+.nostos-body input:focus,
+.nostos-body select:focus,
+.nostos-body textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 18px rgba(217, 180, 108, 0.16);
+}
+
+/* ── Keyframes ── */
+@keyframes nostosWaterBreathe {
+  0% {
+    opacity: 0.45;
+    transform: translateX(-50%) scaleX(0.92);
+  }
+  100% {
+    opacity: 0.85;
+    transform: translateX(-50%) scaleX(1.08);
+  }
+}
+
+@keyframes nostosFogDrift {
+  0% {
+    transform: translate3d(-4%, 0, 0);
+  }
+  100% {
+    transform: translate3d(4%, 0, 0);
+  }
+}
+
+@keyframes nostosGrainShift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-1px, 1px);
+  }
+  50% {
+    transform: translate(1px, -1px);
+  }
+  75% {
+    transform: translate(-1px, -1px);
+  }
+}
+
+@keyframes nostosDevelop {
+  0% {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes nostosSheen {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ── Reduced Motion & Save-Data Safeguards ── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html[data-reduced-motion='true'] *,
+html[data-reduced-motion='true'] *::before,
+html[data-reduced-motion='true'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* ── Printable Checklists (A4 friendly) ── */
+@media print {
+  header,
+  footer,
+  nav,
+  .no-print,
+  .nostos-film-grain {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+}

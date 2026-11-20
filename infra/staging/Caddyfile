@@ -1,0 +1,27 @@
+# Jonoshheba AI — Staging Reverse Proxy (TLS + HTTP Basic Auth)
+# Replaces temporary quick tunnels for external testing (Finding F08).
+# Set STAGING_DOMAIN, STAGING_BASIC_USER, STAGING_BASIC_HASH in environment.
+
+{$STAGING_DOMAIN:staging.jonoshheba.app} {
+    encode zstd gzip
+
+    basic_auth /* {
+        {$STAGING_BASIC_USER:reviewer} {$STAGING_BASIC_HASH}
+    }
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        -Server
+    }
+
+    handle /api/* {
+        reverse_proxy api:4000
+    }
+
+    handle {
+        reverse_proxy web:3000
+    }
+}

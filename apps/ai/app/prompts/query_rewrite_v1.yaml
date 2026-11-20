@@ -1,0 +1,10 @@
+id: rag.query_rewrite
+version: "1.0.0"
+eval_set: query_rewrite_v1
+inputs:
+  - conversation_summary
+  - user_query
+template: |
+  Rewrite the user's latest message into a standalone Bangla/English citizen-service search query.
+  Conversation context: {{conversation_summary}}
+  Latest message: {{user_query}}

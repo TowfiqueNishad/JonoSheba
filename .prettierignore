@@ -1,0 +1,10 @@
+node_modules
+dist
+.next
+.turbo
+.expo
+.venv
+coverage
+pnpm-lock.yaml
+uv.lock
+*.min.js

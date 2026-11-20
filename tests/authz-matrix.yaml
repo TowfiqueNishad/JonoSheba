@@ -1,0 +1,102 @@
+# Jonoshheba AI — Authorization Test Matrix (Finding S1–S3, Prompt F01)
+# Verified in CI against the live OpenAPI spec generated from AppModule.
+# Any operation returning an unexpected 200/201 for an unauthorized actor fails CI.
+#
+# Actors:
+#   anonymous     - Unauthenticated request (no JWT, no X-Session-Token, no HMAC signature)
+#   citizen       - Authenticated Role.CITIZEN (MFA not required)
+#   other_citizen - Second authenticated Role.CITIZEN (tests IDOR on citizen-owned resources)
+#   editor_no_mfa - Authenticated Role.CONTENT_EDITOR WITHOUT mfaVerified=true
+#   editor        - Authenticated Role.CONTENT_EDITOR WITH mfaVerified=true
+#   admin         - Authenticated Role.PLATFORM_ADMIN WITH mfaVerified=true
+
+rules:
+  - name: admin_reviewer_only
+    pattern: "^(POST /api/v1/admin/review-queue/\\{id\\}/decision|POST /api/v1/admin/services/\\{slug\\}/publish|POST /api/v1/admin/services/\\{slug\\}/archive|GET /api/v1/admin/reviews|POST /api/v1/admin/hotlines/proposals/\\{id\\}/approve)$"
+    anonymous: [401]
+    citizen: [403]
+    other_citizen: [403]
+    editor_no_mfa: [403]
+    editor: [403]
+    admin: [200, 201, 400, 404]
+
+  - name: admin_support_or_ops_only
+    pattern: "^(GET /api/v1/admin/providers|GET /api/v1/admin/ai-ops|GET /api/v1/admin/support/tickets|PATCH /api/v1/admin/support/tickets/\\{id\\})$"
+    anonymous: [401]
+    citizen: [403]
+    other_citizen: [403]
+    editor_no_mfa: [403]
+    editor: [403]
+    admin: [200, 201, 400, 404]
+
+  - name: admin_staff_all_other
+    pattern: "^(GET|POST|PATCH|PUT|DELETE) /api/v1/admin/"
+    anonymous: [401]
+    citizen: [403]
+    other_citizen: [403]
+    editor_no_mfa: [403]
+    editor: [200, 201, 400, 404]
+    admin: [200, 201, 400, 404]
+
+  - name: chat_session_owned_resources
+    pattern: "^(GET|DELETE) /api/v1/(chat|assistant)/sessions/\\{sessionId\\}$"
+    anonymous: [404]
+    citizen: [404]
+    other_citizen: [404]
+    editor_no_mfa: [404]
+    editor: [404]
+    admin: [404]
+
+  - name: chat_feedback_owned
+    pattern: "^POST /api/v1/(chat|assistant)/feedback$"
+    anonymous: [400, 404]
+    citizen: [400, 404]
+    other_citizen: [400, 404]
+    editor_no_mfa: [400, 404]
+    editor: [400, 404]
+    admin: [400, 404]
+
+  - name: webhooks_and_inbound_channels
+    pattern: "^POST /api/v1/(channels/(sms/inbound|ussd|ivr)|webhooks/sms/\\{provider\\}/dlr)$"
+    anonymous: [401]
+    citizen: [401]
+    other_citizen: [401]
+    editor_no_mfa: [401]
+    editor: [401]
+    admin: [401]
+
+  - name: assisted_mode_org_member
+    pattern: "^(GET|POST) /api/v1/channels/assisted/sessions(/\\{id\\})?$"
+    anonymous: [401]
+    citizen: [403]
+    other_citizen: [403]
+    editor_no_mfa: [403]
+    editor: [403]
+    admin: [200, 201, 400, 404]
+
+  - name: auth_session_required
+    pattern: "^POST /api/v1/auth/(logout|mfa/setup|mfa/verify)$"
+    anonymous: [401]
+    citizen: [200, 201, 400, 401, 403]
+    other_citizen: [200, 201, 400, 401, 403]
+    editor_no_mfa: [200, 201, 400, 401, 403]
+    editor: [200, 201, 400, 401, 403]
+    admin: [200, 201, 400, 401, 403]
+
+  - name: citizen_owned_private_endpoints
+    pattern: "^(GET|POST|PATCH|PUT|DELETE) /api/v1/(me(/.*)?|ticket-watches(/.*)?|notifications(/.*)?|cases(/.*)?|support/tickets|utilities/outage-subscriptions(/.*)?)$"
+    anonymous: [401]
+    citizen: [200, 201, 202, 400, 404]
+    other_citizen: [200, 201, 202, 400, 403, 404]
+    editor_no_mfa: [200, 201, 202, 400, 403, 404]
+    editor: [200, 201, 202, 400, 403, 404]
+    admin: [200, 201, 202, 400, 403, 404]
+
+  - name: public_read_and_stateless_endpoints
+    pattern: "^(GET|POST) /(health|ready|\\.well-known/jwks\\.json|api/v1/(\\.well-known/jwks\\.json|health|ready|openapi\\.json|stats|auth/(otp/request|otp/verify|register|email/verify|login|password/forgot|password/reset|oauth/\\{provider\\}|guest|refresh)|geo/.*|rail/.*|metro/.*|tolls|bus/.*|water/.*|air/.*|journeys/plan|orgs(/.*)?|ministries(/.*)?|education(/.*)?|offices/resolve|services(/.*)?|programmes(/.*)?|programs(/.*)?|scholarships(/.*)?|jobs(/.*)?|places(/.*)?|offline-packs/.*|calendar(\\.ics)?|hotlines(/.*)?|categories|life-events(/.*)?|notices|agencies|facilities|utilities/(outages|providers)|faqs|search(/suggest)?|content-reports|transport/.*|eligibility/.*|complaint-guides|emergency(/.*)?|health/guidance|country-packs(/.*)?|(chat|assistant)/(message|stream)))$"
+    anonymous: [200, 201, 400, 401, 404, 422]
+    citizen: [200, 201, 400, 401, 404, 422]
+    other_citizen: [200, 201, 400, 401, 404, 422]
+    editor_no_mfa: [200, 201, 400, 401, 404, 422]
+    editor: [200, 201, 400, 401, 404, 422]
+    admin: [200, 201, 400, 401, 404, 422]

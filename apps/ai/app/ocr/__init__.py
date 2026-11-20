@@ -1,0 +1,1 @@
+"""OCR & document parsing adapters."""
