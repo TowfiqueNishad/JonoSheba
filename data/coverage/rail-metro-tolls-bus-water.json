@@ -1,0 +1,510 @@
+{
+  "rail": {
+    "sourceId": "SRC_BR_OFFICIAL",
+    "osmFallbackSourceId": "SRC_OSM_BD",
+    "lastVerifiedAt": "2026-11-10T00:00:00Z",
+    "timetableVersion": {
+      "version": "2026.11-W54",
+      "effectiveFrom": "2026-11-01T00:00:00+06:00",
+      "sourceId": "SRC_BR_OFFICIAL",
+      "sourceUrl": "https://railway.gov.bd"
+    },
+    "channels": {
+      "officialWebUrl": "https://eticket.railway.gov.bd",
+      "officialApp": "Rail Sheba (Android / iOS)",
+      "hotline": "131",
+      "maxTicketsPerNid": 4,
+      "advanceBookingDays": 10,
+      "nidRegistrationRequired": true,
+      "lastVerifiedAt": "2026-11-10T00:00:00Z",
+      "sourceId": "SRC_BR_OFFICIAL",
+      "fraudWarningBn": "সতর্কতা: শুধুমাত্র eticket.railway.gov.bd, Rail Sheba অ্যাপ বা অনুমোদিত কাউন্টার থেকে টিকিট কিনুন। অননুমোদিত ফেসবুক পেজ বা সাইটে টাকা/পিন দেবেন না।",
+      "fraudWarningEn": "Fraud warning: Buy tickets ONLY via eticket.railway.gov.bd, Rail Sheba app, or authorised counters. Avoid unofficial websites or Facebook pages."
+    },
+    "refundRules": [
+      { "hoursBeforeDepartureMin": 48, "deductionPercent": 0, "minChargeBdt": 40, "noteBn": "যাত্রার ৪৮ ঘণ্টার বেশি আগে (সার্ভিস চার্জ বাদে সম্পূর্ণ ফেরত)", "noteEn": "> 48h before departure (full refund minus small service charge)" },
+      { "hoursBeforeDepartureMin": 24, "deductionPercent": 25, "minChargeBdt": 40, "noteBn": "২৪–৪৮ ঘণ্টা আগে ২৫% কর্তন", "noteEn": "24-48h before departure: 25% deduction" },
+      { "hoursBeforeDepartureMin": 12, "deductionPercent": 50, "minChargeBdt": 40, "noteBn": "১২–২৪ ঘণ্টা আগে ৫০% কর্তন", "noteEn": "12-24h before departure: 50% deduction" },
+      { "hoursBeforeDepartureMin": 6, "deductionPercent": 75, "minChargeBdt": 40, "noteBn": "৬–১২ ঘণ্টা আগে ৭৫% কর্তন", "noteEn": "6-12h before departure: 75% deduction" },
+      { "hoursBeforeDepartureMin": 0, "deductionPercent": 100, "minChargeBdt": 0, "noteBn": "৬ ঘণ্টার কম বাকি থাকলে কোনো রিফান্ড নেই", "noteEn": "< 6h before departure: non-refundable" }
+    ],
+    "stations": [
+      { "code": "DA", "nameBn": "ঢাকা (কমলাপুর)", "nameEn": "Dhaka (Kamalapur)", "aliases": ["Kamalapur", "Dhaka", "কমলাপুর", "ঢাকা স্টেশন"], "nameHistory": [], "zone": "East", "division": "Dhaka", "districtEn": "Dhaka", "lat": 23.7315, "lng": 90.4263, "gauge": "DG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "ramp", "toilets", "parking"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "BMB", "nameBn": "ঢাকা বিমানবন্দর", "nameEn": "Dhaka Biman Bandar (Airport)", "aliases": ["Airport", "Biman Bandar", "বিমানবন্দর"], "nameHistory": [], "zone": "East", "division": "Dhaka", "districtEn": "Dhaka", "lat": 23.8513, "lng": 90.4086, "gauge": "DG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "toilets"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "BB", "nameBn": "ভৈরব বাজার", "nameEn": "Bhairab Bazar", "aliases": ["Bhairab", "ভৈরব"], "nameHistory": [], "zone": "East", "division": "Dhaka", "districtEn": "Kishoreganj", "lat": 24.0522, "lng": 90.9765, "gauge": "MG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "toilets"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "BBN", "nameBn": "ব্রাহ্মণবাড়িয়া", "nameEn": "Brahmanbaria", "aliases": ["B-Baria", "ব্রাহ্মণবাড়িয়া"], "nameHistory": [], "zone": "East", "division": "Dhaka", "districtEn": "Brahmanbaria", "lat": 23.9666, "lng": 91.1115, "gauge": "MG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "toilets"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "CML", "nameBn": "কুমিল্লা", "nameEn": "Cumilla", "aliases": ["Comilla", "কুমিল্লা"], "nameHistory": [{ "oldNameBn": "কুমিল্লা", "oldNameEn": "Comilla", "validFrom": "1971-12-16", "validTo": "2018-04-02" }], "zone": "East", "division": "Chattogram", "districtEn": "Cumilla", "lat": 23.4573, "lng": 91.1699, "gauge": "MG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "toilets"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "FEN", "nameBn": "ফেনী", "nameEn": "Feni", "aliases": ["Feni", "ফেনী"], "nameHistory": [], "zone": "East", "division": "Chattogram", "districtEn": "Feni", "lat": 23.0159, "lng": 91.3976, "gauge": "MG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "toilets"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "CTG", "nameBn": "চট্টগ্রাম", "nameEn": "Chattogram", "aliases": ["Chittagong", "চট্টগ্রাম"], "nameHistory": [{ "oldNameBn": "চট্টগ্রাম", "oldNameEn": "Chittagong", "validFrom": "1971-12-16", "validTo": "2018-04-02" }], "zone": "East", "division": "Chattogram", "districtEn": "Chattogram", "lat": 22.3338, "lng": 91.8327, "gauge": "MG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "ramp", "toilets", "parking"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "CXB", "nameBn": "কক্সবাজার (আইকনিক স্টেশন)", "nameEn": "Cox's Bazar", "aliases": ["Coxs Bazar", "Coxsbazar", "কক্সবাজার"], "nameHistory": [], "zone": "East", "division": "Chattogram", "districtEn": "Cox's Bazar", "lat": 21.4488, "lng": 92.0112, "gauge": "DG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "ramp", "toilets", "parking"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "SYL", "nameBn": "সিলেট", "nameEn": "Sylhet", "aliases": ["Sylhet", "সিলেট"], "nameHistory": [], "zone": "East", "division": "Dhaka", "districtEn": "Sylhet", "lat": 24.8817, "lng": 91.8697, "gauge": "MG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "toilets", "parking"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "SRM", "nameBn": "শ্রীমঙ্গল", "nameEn": "Sreemangal", "aliases": ["Srimangal", "শ্রীমঙ্গল"], "nameHistory": [], "zone": "East", "division": "Dhaka", "districtEn": "Moulvibazar", "lat": 24.3083, "lng": 91.7296, "gauge": "MG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "toilets"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "RAJ", "nameBn": "রাজশাহী", "nameEn": "Rajshahi", "aliases": ["Rajshahi", "রাজশাহী"], "nameHistory": [], "zone": "West", "division": "Pakshi", "districtEn": "Rajshahi", "lat": 24.3740, "lng": 88.6105, "gauge": "BG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "ramp", "toilets", "parking"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "BGA", "nameBn": "বগুড়া", "nameEn": "Bogura", "aliases": ["Bogra", "বগুড়া"], "nameHistory": [{ "oldNameBn": "বগুড়া", "oldNameEn": "Bogra", "validFrom": "1971-12-16", "validTo": "2018-04-02" }], "zone": "West", "division": "Lalmonirhat", "districtEn": "Bogura", "lat": 24.8481, "lng": 89.3730, "gauge": "MG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "toilets"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "JSR", "nameBn": "যশোর", "nameEn": "Jashore", "aliases": ["Jessore", "যশোর"], "nameHistory": [{ "oldNameBn": "যশোর", "oldNameEn": "Jessore", "validFrom": "1971-12-16", "validTo": "2018-04-02" }], "zone": "West", "division": "Pakshi", "districtEn": "Jashore", "lat": 23.1634, "lng": 89.2055, "gauge": "BG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "toilets"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "KLN", "nameBn": "খুলনা", "nameEn": "Khulna", "aliases": ["Khulna", "খুলনা"], "nameHistory": [], "zone": "West", "division": "Pakshi", "districtEn": "Khulna", "lat": 22.8200, "lng": 89.5582, "gauge": "BG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "ramp", "toilets"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "RGP", "nameBn": "রংপুর", "nameEn": "Rangpur", "aliases": ["Rangpur", "রংপুর"], "nameHistory": [], "zone": "West", "division": "Lalmonirhat", "districtEn": "Rangpur", "lat": 25.7365, "lng": 89.2610, "gauge": "DG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "toilets"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "MYN", "nameBn": "ময়মনসিংহ", "nameEn": "Mymensingh", "aliases": ["Mymensingh", "ময়মনসিংহ"], "nameHistory": [], "zone": "East", "division": "Dhaka", "districtEn": "Mymensingh", "lat": 24.7539, "lng": 90.4073, "gauge": "MG", "status": "open", "eTicketingEnabled": true, "facilities": ["waiting_room", "toilets"], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "code": "HALT-WEST-01", "nameBn": "সোনাতলা হল্ট (সাময়িক বন্ধ উদাহরণ)", "nameEn": "Sonatola Halt (West Zone Sample)", "aliases": ["Sonatola"], "nameHistory": [], "zone": "West", "division": "Lalmonirhat", "districtEn": "Bogura", "lat": 25.0320, "lng": 89.5050, "gauge": "MG", "status": "closed_temporarily", "eTicketingEnabled": false, "facilities": [], "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z", "isDemo": true }
+    ],
+    "trains": [
+      {
+        "number": "702",
+        "nameBn": "সুবর্ণ এক্সপ্রেস",
+        "nameEn": "Suborno Express",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": ["Monday"],
+        "classes": ["S_CHAIR", "SNIGDHA"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "DA", "sequence": 1, "arrival": null, "departure": "16:30", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "16:53", "departure": "16:58", "dayOffset": 0, "km": 17 },
+          { "stationCode": "CTG", "sequence": 3, "arrival": "21:25", "departure": null, "dayOffset": 0, "km": 321 }
+        ]
+      },
+      {
+        "number": "704",
+        "nameBn": "মহানগর গোধূলী",
+        "nameEn": "Mahanagar Godhuli",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": [],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "DA", "sequence": 1, "arrival": null, "departure": "15:00", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "15:23", "departure": "15:28", "dayOffset": 0, "km": 17 },
+          { "stationCode": "BB", "sequence": 3, "arrival": "16:38", "departure": "16:41", "dayOffset": 0, "km": 85 },
+          { "stationCode": "BBN", "sequence": 4, "arrival": "17:02", "departure": "17:05", "dayOffset": 0, "km": 108 },
+          { "stationCode": "CML", "sequence": 5, "arrival": "18:10", "departure": "18:13", "dayOffset": 0, "km": 172 },
+          { "stationCode": "FEN", "sequence": 6, "arrival": "19:00", "departure": "19:03", "dayOffset": 0, "km": 228 },
+          { "stationCode": "CTG", "sequence": 7, "arrival": "20:55", "departure": null, "dayOffset": 0, "km": 321 }
+        ]
+      },
+      {
+        "number": "814",
+        "nameBn": "কক্সবাজার এক্সপ্রেস",
+        "nameEn": "Cox's Bazar Express",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": ["Tuesday"],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S", "AC_B"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "DA", "sequence": 1, "arrival": null, "departure": "22:30", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "22:53", "departure": "22:58", "dayOffset": 0, "km": 17 },
+          { "stationCode": "CTG", "sequence": 3, "arrival": "03:40", "departure": "04:00", "dayOffset": 1, "km": 321 },
+          { "stationCode": "CXB", "sequence": 4, "arrival": "07:20", "departure": null, "dayOffset": 1, "km": 423 }
+        ]
+      },
+      {
+        "number": "709",
+        "nameBn": "পারাবত এক্সপ্রেস",
+        "nameEn": "Parabat Express",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": ["Tuesday"],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S", "AC_B"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "DA", "sequence": 1, "arrival": null, "departure": "06:30", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "06:53", "departure": "06:58", "dayOffset": 0, "km": 17 },
+          { "stationCode": "BB", "sequence": 3, "arrival": "08:05", "departure": "08:08", "dayOffset": 0, "km": 85 },
+          { "stationCode": "BBN", "sequence": 4, "arrival": "08:30", "departure": "08:33", "dayOffset": 0, "km": 108 },
+          { "stationCode": "SRM", "sequence": 5, "arrival": "10:45", "departure": "10:48", "dayOffset": 0, "km": 238 },
+          { "stationCode": "SYL", "sequence": 6, "arrival": "13:00", "departure": null, "dayOffset": 0, "km": 319 }
+        ]
+      },
+      {
+        "number": "753",
+        "nameBn": "সিল্কসিটি এক্সপ্রেস",
+        "nameEn": "Silkcity Express",
+        "type": "intercity",
+        "zone": "West",
+        "offDays": ["Sunday"],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "DA", "sequence": 1, "arrival": null, "departure": "14:30", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "14:53", "departure": "14:58", "dayOffset": 0, "km": 17 },
+          { "stationCode": "RAJ", "sequence": 3, "arrival": "20:20", "departure": null, "dayOffset": 0, "km": 286 }
+        ]
+      },
+      {
+        "number": "825",
+        "nameBn": "জাহানাবাদ এক্সপ্রেস (পদ্মা সেতু রেল সংযোগ)",
+        "nameEn": "Jahanabad Express (Padma Bridge Rail Link)",
+        "type": "intercity",
+        "zone": "West",
+        "offDays": ["Monday"],
+        "classes": ["S_CHAIR", "SNIGDHA"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "DA", "sequence": 1, "arrival": null, "departure": "20:00", "dayOffset": 0, "km": 0 },
+          { "stationCode": "JSR", "sequence": 2, "arrival": "22:45", "departure": "22:50", "dayOffset": 0, "km": 172 },
+          { "stationCode": "KLN", "sequence": 3, "arrival": "23:45", "departure": null, "dayOffset": 0, "km": 212 }
+        ]
+      },
+      {
+        "number": "701",
+        "nameBn": "সুবর্ণ এক্সপ্রেস (চট্টগ্রাম → ঢাকা)",
+        "nameEn": "Suborno Express (Return)",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": ["Monday"],
+        "classes": ["S_CHAIR", "SNIGDHA"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "CTG", "sequence": 1, "arrival": null, "departure": "07:00", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "11:45", "departure": "11:50", "dayOffset": 0, "km": 304 },
+          { "stationCode": "DA", "sequence": 3, "arrival": "12:25", "departure": null, "dayOffset": 0, "km": 321 }
+        ]
+      },
+      {
+        "number": "703",
+        "nameBn": "মহানগর প্রভাতী (চট্টগ্রাম → ঢাকা)",
+        "nameEn": "Mahanagar Provati",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": [],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "CTG", "sequence": 1, "arrival": null, "departure": "07:45", "dayOffset": 0, "km": 0 },
+          { "stationCode": "FEN", "sequence": 2, "arrival": "09:20", "departure": "09:23", "dayOffset": 0, "km": 93 },
+          { "stationCode": "CML", "sequence": 3, "arrival": "10:15", "departure": "10:18", "dayOffset": 0, "km": 149 },
+          { "stationCode": "BBN", "sequence": 4, "arrival": "11:25", "departure": "11:28", "dayOffset": 0, "km": 213 },
+          { "stationCode": "BB", "sequence": 5, "arrival": "11:52", "departure": "11:55", "dayOffset": 0, "km": 236 },
+          { "stationCode": "BMB", "sequence": 6, "arrival": "13:10", "departure": "13:15", "dayOffset": 0, "km": 304 },
+          { "stationCode": "DA", "sequence": 7, "arrival": "13:50", "departure": null, "dayOffset": 0, "km": 321 }
+        ]
+      },
+      {
+        "number": "813",
+        "nameBn": "কক্সবাজার এক্সপ্রেস (কক্সবাজার → ঢাকা)",
+        "nameEn": "Cox's Bazar Express (Return)",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": ["Tuesday"],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S", "AC_B"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "CXB", "sequence": 1, "arrival": null, "departure": "12:30", "dayOffset": 0, "km": 0 },
+          { "stationCode": "CTG", "sequence": 2, "arrival": "15:40", "departure": "16:00", "dayOffset": 0, "km": 102 },
+          { "stationCode": "BMB", "sequence": 3, "arrival": "20:35", "departure": "20:40", "dayOffset": 0, "km": 406 },
+          { "stationCode": "DA", "sequence": 4, "arrival": "21:10", "departure": null, "dayOffset": 0, "km": 423 }
+        ]
+      },
+      {
+        "number": "710",
+        "nameBn": "পারাবত এক্সপ্রেস (সিলেট → ঢাকা)",
+        "nameEn": "Parabat Express (Return)",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": ["Tuesday"],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S", "AC_B"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "SYL", "sequence": 1, "arrival": null, "departure": "15:45", "dayOffset": 0, "km": 0 },
+          { "stationCode": "SRM", "sequence": 2, "arrival": "17:45", "departure": "17:48", "dayOffset": 0, "km": 81 },
+          { "stationCode": "BBN", "sequence": 3, "arrival": "19:50", "departure": "19:53", "dayOffset": 0, "km": 211 },
+          { "stationCode": "BB", "sequence": 4, "arrival": "20:15", "departure": "20:18", "dayOffset": 0, "km": 234 },
+          { "stationCode": "BMB", "sequence": 5, "arrival": "21:55", "departure": "22:00", "dayOffset": 0, "km": 302 },
+          { "stationCode": "DA", "sequence": 6, "arrival": "22:40", "departure": null, "dayOffset": 0, "km": 319 }
+        ]
+      },
+      {
+        "number": "754",
+        "nameBn": "সিল্কসিটি এক্সপ্রেস (রাজশাহী → ঢাকা)",
+        "nameEn": "Silkcity Express (Return)",
+        "type": "intercity",
+        "zone": "West",
+        "offDays": ["Sunday"],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "RAJ", "sequence": 1, "arrival": null, "departure": "07:40", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "12:55", "departure": "13:00", "dayOffset": 0, "km": 269 },
+          { "stationCode": "DA", "sequence": 3, "arrival": "13:30", "departure": null, "dayOffset": 0, "km": 286 }
+        ]
+      },
+      {
+        "number": "826",
+        "nameBn": "জাহানাবাদ এক্সপ্রেস (খুলনা → ঢাকা)",
+        "nameEn": "Jahanabad Express (Return)",
+        "type": "intercity",
+        "zone": "West",
+        "offDays": ["Monday"],
+        "classes": ["S_CHAIR", "SNIGDHA"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "KLN", "sequence": 1, "arrival": null, "departure": "06:00", "dayOffset": 0, "km": 0 },
+          { "stationCode": "JSR", "sequence": 2, "arrival": "06:50", "departure": "06:55", "dayOffset": 0, "km": 40 },
+          { "stationCode": "DA", "sequence": 3, "arrival": "09:45", "departure": null, "dayOffset": 0, "km": 212 }
+        ]
+      },
+      {
+        "number": "771",
+        "nameBn": "রংপুর এক্সপ্রেস (ঢাকা → বগুড়া → রংপুর)",
+        "nameEn": "Rangpur Express",
+        "type": "intercity",
+        "zone": "West",
+        "offDays": ["Monday"],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S", "AC_B"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "DA", "sequence": 1, "arrival": null, "departure": "09:10", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "09:33", "departure": "09:38", "dayOffset": 0, "km": 17 },
+          { "stationCode": "BGA", "sequence": 3, "arrival": "15:10", "departure": "15:15", "dayOffset": 0, "km": 248 },
+          { "stationCode": "RGP", "sequence": 4, "arrival": "18:55", "departure": null, "dayOffset": 0, "km": 382 }
+        ]
+      },
+      {
+        "number": "772",
+        "nameBn": "রংপুর এক্সপ্রেস (রংপুর → বগুড়া → ঢাকা)",
+        "nameEn": "Rangpur Express (Return)",
+        "type": "intercity",
+        "zone": "West",
+        "offDays": ["Monday"],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S", "AC_B"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "RGP", "sequence": 1, "arrival": null, "departure": "20:00", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BGA", "sequence": 2, "arrival": "23:25", "departure": "23:30", "dayOffset": 0, "km": 134 },
+          { "stationCode": "BMB", "sequence": 3, "arrival": "05:30", "departure": "05:35", "dayOffset": 1, "km": 365 },
+          { "stationCode": "DA", "sequence": 4, "arrival": "06:05", "departure": null, "dayOffset": 1, "km": 382 }
+        ]
+      },
+      {
+        "number": "777",
+        "nameBn": "হাওর এক্সপ্রেস (ঢাকা → ময়মনসিংহ)",
+        "nameEn": "Haor Express",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": ["Friday"],
+        "classes": ["S_CHAIR", "SNIGDHA"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "DA", "sequence": 1, "arrival": null, "departure": "22:15", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "22:38", "departure": "22:43", "dayOffset": 0, "km": 17 },
+          { "stationCode": "MYN", "sequence": 3, "arrival": "01:40", "departure": null, "dayOffset": 1, "km": 122 }
+        ]
+      },
+      {
+        "number": "778",
+        "nameBn": "হাওর এক্সপ্রেস (ময়মনসিংহ → ঢাকা)",
+        "nameEn": "Haor Express (Return)",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": ["Saturday"],
+        "classes": ["S_CHAIR", "SNIGDHA"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "MYN", "sequence": 1, "arrival": null, "departure": "10:15", "dayOffset": 0, "km": 0 },
+          { "stationCode": "BMB", "sequence": 2, "arrival": "13:15", "departure": "13:20", "dayOffset": 0, "km": 105 },
+          { "stationCode": "DA", "sequence": 3, "arrival": "13:55", "departure": null, "dayOffset": 0, "km": 122 }
+        ]
+      },
+      {
+        "number": "719",
+        "nameBn": "পাহাড়িকা এক্সপ্রেস (চট্টগ্রাম → সিলেট)",
+        "nameEn": "Paharika Express",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": ["Monday"],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "CTG", "sequence": 1, "arrival": null, "departure": "07:50", "dayOffset": 0, "km": 0 },
+          { "stationCode": "FEN", "sequence": 2, "arrival": "09:20", "departure": "09:23", "dayOffset": 0, "km": 93 },
+          { "stationCode": "CML", "sequence": 3, "arrival": "10:25", "departure": "10:28", "dayOffset": 0, "km": 149 },
+          { "stationCode": "SRM", "sequence": 4, "arrival": "14:00", "departure": "14:03", "dayOffset": 0, "km": 292 },
+          { "stationCode": "SYL", "sequence": 5, "arrival": "16:00", "departure": null, "dayOffset": 0, "km": 373 }
+        ]
+      },
+      {
+        "number": "720",
+        "nameBn": "পাহাড়িকা এক্সপ্রেস (সিলেট → চট্টগ্রাম)",
+        "nameEn": "Paharika Express (Return)",
+        "type": "intercity",
+        "zone": "East",
+        "offDays": ["Wednesday"],
+        "classes": ["S_CHAIR", "SNIGDHA", "AC_S"],
+        "sourceId": "SRC_BR_OFFICIAL",
+        "lastVerifiedAt": "2026-11-10T00:00:00Z",
+        "stops": [
+          { "stationCode": "SYL", "sequence": 1, "arrival": null, "departure": "10:30", "dayOffset": 0, "km": 0 },
+          { "stationCode": "SRM", "sequence": 2, "arrival": "12:25", "departure": "12:28", "dayOffset": 0, "km": 81 },
+          { "stationCode": "CML", "sequence": 3, "arrival": "16:10", "departure": "16:13", "dayOffset": 0, "km": 224 },
+          { "stationCode": "FEN", "sequence": 4, "arrival": "17:15", "departure": "17:18", "dayOffset": 0, "km": 280 },
+          { "stationCode": "CTG", "sequence": 5, "arrival": "19:00", "departure": null, "dayOffset": 0, "km": 373 }
+        ]
+      }
+    ],
+    "internationalServices": [
+      { "nameBn": "মৈত্রী এক্সপ্রেস", "nameEn": "Maitree Express", "route": "Dhaka – Kolkata", "status": "suspended_check_official_notice", "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "nameBn": "বন্ধন এক্সপ্রেস", "nameEn": "Bandhan Express", "route": "Khulna – Kolkata", "status": "suspended_check_official_notice", "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" },
+      { "nameBn": "মিতালী এক্সপ্রেস", "nameEn": "Mitali Express", "route": "Dhaka – New Jalpaiguri", "status": "suspended_check_official_notice", "sourceId": "SRC_BR_OFFICIAL", "lastVerifiedAt": "2026-11-10T00:00:00Z" }
+    ],
+    "eidSchedule": {
+      "policyNoteBn": "ঈদ অগ্রিম টিকিট ১০০% অনলাইনে (eticket.railway.gov.bd) সকাল ৮:০০টা থেকে (পশ্চিমাঞ্চল) ও দুপুর ২:০০টা থেকে (পূর্বাঞ্চল) বিক্রি হয়। স্পেশাল ট্রেনের টিকিট কাউন্টারে থাকতে পারে।",
+      "policyNoteEn": "Eid advance tickets are 100% online at eticket.railway.gov.bd (West Zone 08:00, East Zone 14:00 Asia/Dhaka). Special trains may be counter-only.",
+      "sourceId": "SRC_BR_OFFICIAL",
+      "lastVerifiedAt": "2026-11-10T00:00:00Z",
+      "windows": [
+        { "saleDate": "2027-02-28", "journeyDate": "2027-03-10", "westZoneOpenDhaka": "08:00", "eastZoneOpenDhaka": "14:00", "provisional": true },
+        { "saleDate": "2027-03-01", "journeyDate": "2027-03-11", "westZoneOpenDhaka": "08:00", "eastZoneOpenDhaka": "14:00", "provisional": true }
+      ]
+    }
+  },
+  "metro": {
+    "sourceId": "SRC_DMTCL_OFFICIAL",
+    "lastVerifiedAt": "2026-11-10T00:00:00Z",
+    "lines": [
+      { "code": "MRT-6", "nameBn": "এমআরটি লাইন-৬ (উত্তরা উত্তর – মতিঝিল)", "nameEn": "MRT Line-6 (Uttara North – Motijheel)", "status": "operational", "lengthKm": 20.1, "headwayPeakMin": 8, "headwayOffPeakMin": 12, "firstTrainDhaka": "07:10", "lastTrainDhaka": "21:40", "weeklyOff": "None (Friday afternoon service)" },
+      { "code": "MRT-1", "nameBn": "এমআরটি লাইন-১ (বিমানবন্দর – কমলাপুর ও পূর্বাচল)", "nameEn": "MRT Line-1 (Airport – Kamalapur & Purbachal)", "status": "under_construction", "lengthKm": 31.24 },
+      { "code": "MRT-5N", "nameBn": "এমআরটি লাইন-৫ উত্তর (হেমায়েতপুর – ভাটারা)", "nameEn": "MRT Line-5 North (Hemayetpur – Vatara)", "status": "under_construction", "lengthKm": 20.0 },
+      { "code": "MRT-2", "nameBn": "এমআরটি লাইন-২", "nameEn": "MRT Line-2", "status": "planned", "lengthKm": 24.0 },
+      { "code": "MRT-4", "nameBn": "এমআরটি লাইন-৪", "nameEn": "MRT Line-4", "status": "planned", "lengthKm": 16.0 },
+      { "code": "BRT-3", "nameBn": "ঢাকা–গাজীপুর বিআরটি (BRT-3)", "nameEn": "Gazipur – Airport Bus Rapid Transit (BRT)", "status": "partial_or_pending_verification", "lengthKm": 20.5 }
+    ],
+    "stations": [
+      { "code": "MRT6-01", "line": "MRT-6", "seq": 1, "nameBn": "উত্তরা উত্তর", "nameEn": "Uttara North", "status": "operational", "lat": 23.8691, "lng": 90.3674 },
+      { "code": "MRT6-02", "line": "MRT-6", "seq": 2, "nameBn": "উত্তরা সেন্টার", "nameEn": "Uttara Center", "status": "operational", "lat": 23.8595, "lng": 90.3652 },
+      { "code": "MRT6-03", "line": "MRT-6", "seq": 3, "nameBn": "উত্তরা দক্ষিণ", "nameEn": "Uttara South", "status": "operational", "lat": 23.8458, "lng": 90.3631 },
+      { "code": "MRT6-04", "line": "MRT-6", "seq": 4, "nameBn": "পল্লবী", "nameEn": "Pallabi", "status": "operational", "lat": 23.8260, "lng": 90.3642 },
+      { "code": "MRT6-05", "line": "MRT-6", "seq": 5, "nameBn": "মিরপুর ১১", "nameEn": "Mirpur 11", "status": "operational", "lat": 23.8190, "lng": 90.3653 },
+      { "code": "MRT6-06", "line": "MRT-6", "seq": 6, "nameBn": "মিরপুর ১০", "nameEn": "Mirpur 10", "status": "operational", "lat": 23.8070, "lng": 90.3686 },
+      { "code": "MRT6-07", "line": "MRT-6", "seq": 7, "nameBn": "কাজীপাড়া", "nameEn": "Kazipara", "status": "operational", "lat": 23.7997, "lng": 90.3718 },
+      { "code": "MRT6-08", "line": "MRT-6", "seq": 8, "nameBn": "শেওড়াপাড়া", "nameEn": "Shewrapara", "status": "operational", "lat": 23.7908, "lng": 90.3752 },
+      { "code": "MRT6-09", "line": "MRT-6", "seq": 9, "nameBn": "আগারগাঁও", "nameEn": "Agargaon", "status": "operational", "lat": 23.7782, "lng": 90.3802 },
+      { "code": "MRT6-10", "line": "MRT-6", "seq": 10, "nameBn": "বিজয় সরণি", "nameEn": "Bijoy Sarani", "status": "operational", "lat": 23.7662, "lng": 90.3831 },
+      { "code": "MRT6-11", "line": "MRT-6", "seq": 11, "nameBn": "ফার্মগেট", "nameEn": "Farmgate", "status": "operational", "lat": 23.7573, "lng": 90.3894 },
+      { "code": "MRT6-12", "line": "MRT-6", "seq": 12, "nameBn": "কারওয়ান বাজার", "nameEn": "Karwan Bazar", "status": "operational", "lat": 23.7509, "lng": 90.3929 },
+      { "code": "MRT6-13", "line": "MRT-6", "seq": 13, "nameBn": "শাহবাগ", "nameEn": "Shahbagh", "status": "operational", "lat": 23.7393, "lng": 90.3958 },
+      { "code": "MRT6-14", "line": "MRT-6", "seq": 14, "nameBn": "ঢাকা বিশ্ববিদ্যালয়", "nameEn": "Dhaka University", "status": "operational", "lat": 23.7320, "lng": 90.3974 },
+      { "code": "MRT6-15", "line": "MRT-6", "seq": 15, "nameBn": "বাংলাদেশ সচিবালয়", "nameEn": "Bangladesh Secretariat", "status": "operational", "lat": 23.7294, "lng": 90.4079 },
+      { "code": "MRT6-16", "line": "MRT-6", "seq": 16, "nameBn": "মতিঝিল", "nameEn": "Motijheel", "status": "operational", "lat": 23.7270, "lng": 90.4174 },
+      { "code": "MRT6-17", "line": "MRT-6", "seq": 17, "nameBn": "কমলাপুর (সম্প্রসারণ)", "nameEn": "Kamalapur (Extension ~2027)", "status": "under_construction", "lat": 23.7315, "lng": 90.4263 }
+    ]
+  },
+  "tolls": [
+    {
+      "code": "PADMA_BRIDGE",
+      "nameBn": "পদ্মা বহুমুখী সেতু",
+      "nameEn": "Padma Multipurpose Bridge",
+      "aliases": ["Padma Setu", "পদ্মা সেতু"],
+      "nameHistory": [],
+      "paymentMethods": ["cash", "ETC_RFID"],
+      "sourceId": "SRC_BBA_TOLLS",
+      "sourceUrl": "https://bba.gov.bd",
+      "lastVerifiedAt": "2026-11-01T00:00:00Z",
+      "ratesBdt": { "motorcycle": 100, "car_jeep": 750, "microbus": 1300, "small_bus": 1400, "medium_bus": 2000, "large_bus": 2400, "small_truck": 1600 }
+    },
+    {
+      "code": "JAMUNA_BRIDGE",
+      "nameBn": "যমুনা সেতু",
+      "nameEn": "Jamuna Bridge",
+      "aliases": ["Bangabandhu Bridge", "Jamuna Multipurpose Bridge", "বঙ্গবন্ধু সেতু", "যমুনা সেতু"],
+      "nameHistory": [{ "oldNameBn": "বঙ্গবন্ধু সেতু", "oldNameEn": "Bangabandhu Bridge", "validFrom": "1998-06-23", "validTo": "2025-02-25" }],
+      "paymentMethods": ["cash", "ETC_RFID"],
+      "sourceId": "SRC_BBA_TOLLS",
+      "sourceUrl": "https://bba.gov.bd",
+      "lastVerifiedAt": "2026-11-01T00:00:00Z",
+      "ratesBdt": { "motorcycle": 50, "car_jeep": 550, "microbus": 600, "small_bus": 750, "large_bus": 1000, "small_truck": 1000 }
+    },
+    {
+      "code": "KARNAPHULI_TUNNEL",
+      "nameBn": "কর্ণফুলী টানেল",
+      "nameEn": "Karnaphuli Tunnel",
+      "aliases": ["Bangabandhu Tunnel", "Chattogram Tunnel", "কর্ণফুলী টানেল"],
+      "nameHistory": [{ "oldNameBn": "বঙ্গবন্ধু শেখ মুজিবুর রহমান টানেল", "oldNameEn": "Bangabandhu Sheikh Mujibur Rahman Tunnel", "validFrom": "2023-10-28", "validTo": "2025-02-25" }],
+      "paymentMethods": ["cash", "ETC_RFID"],
+      "sourceId": "SRC_BBA_TOLLS",
+      "sourceUrl": "https://bba.gov.bd",
+      "lastVerifiedAt": "2026-11-01T00:00:00Z",
+      "ratesBdt": { "car_jeep": 200, "microbus": 250, "small_bus": 300, "large_bus": 400, "small_truck": 400 }
+    },
+    {
+      "code": "DHAKA_ELEVATED_EXPRESSWAY",
+      "nameBn": "ঢাকা এলিভেটেড এক্সপ্রেসওয়ে",
+      "nameEn": "Dhaka Elevated Expressway",
+      "aliases": ["Elevated Expressway", "Airport Farmgate Expressway"],
+      "nameHistory": [],
+      "paymentMethods": ["cash", "ETC_RFID"],
+      "sourceId": "SRC_BBA_TOLLS",
+      "sourceUrl": "https://bba.gov.bd",
+      "lastVerifiedAt": "2026-11-01T00:00:00Z",
+      "ratesBdt": { "car_jeep": 80, "microbus": 80, "small_bus": 160, "large_bus": 160, "small_truck": 320 }
+    }
+  ],
+  "bus": {
+    "brtaFareRates": {
+      "sourceId": "SRC_BRTA_OFFICIAL",
+      "sourceUrl": "https://bsp.brta.gov.bd/",
+      "lastVerifiedAt": "2026-11-01T00:00:00Z",
+      "intercityNonAcPerKmBdt": 2.12,
+      "dhakaCityPerKmBdt": 2.42,
+      "minCityFareBdt": 10
+    },
+    "operators": [
+      { "code": "BRTC", "nameBn": "বিআরটিসি (বাংলাদেশ সড়ক পরিবহন কর্পোরেশন)", "nameEn": "BRTC", "partnerStatus": "link_only", "officialUrl": "https://brtc.gov.bd", "eTicketPilotRoutes": ["Dhaka–Barishal", "Dhaka–Daudkandi", "Dhaka–Araihazar"], "sourceId": "SRC_BRTC_OFFICIAL", "lastVerifiedAt": "2026-11-01T00:00:00Z" },
+      { "code": "GREENLINE", "nameBn": "গ্রিন লাইন পরিবহন", "nameEn": "Green Line Paribahan", "partnerStatus": "link_only", "officialUrl": "https://greenlinebd.com", "sourceId": "SRC_BRTA_OFFICIAL", "lastVerifiedAt": "2026-11-01T00:00:00Z" },
+      { "code": "HANIF", "nameBn": "হানিফ এন্টারপ্রাইজ", "nameEn": "Hanif Enterprise", "partnerStatus": "link_only", "officialUrl": "https://hanifenterprise.com", "sourceId": "SRC_BRTA_OFFICIAL", "lastVerifiedAt": "2026-11-01T00:00:00Z" }
+    ],
+    "terminals": [
+      { "code": "TERM-GABTOLI", "nameBn": "গাবতলী আন্তঃজেলা বাস টার্মিনাল", "nameEn": "Gabtoli Inter-District Bus Terminal", "districtEn": "Dhaka", "lat": 23.7837, "lng": 90.3442, "sourceId": "SRC_OSM_BD", "attribution": "© OpenStreetMap contributors (ODbL)" },
+      { "code": "TERM-MOHAKHALI", "nameBn": "মহাখালী বাস টার্মিনাল", "nameEn": "Mohakhali Bus Terminal", "districtEn": "Dhaka", "lat": 23.7781, "lng": 90.4017, "sourceId": "SRC_OSM_BD", "attribution": "© OpenStreetMap contributors (ODbL)" },
+      { "code": "TERM-SAYEDABAD", "nameBn": "সায়েদাবাদ বাস টার্মিনাল", "nameEn": "Sayedabad Bus Terminal", "districtEn": "Dhaka", "lat": 23.7131, "lng": 90.4275, "sourceId": "SRC_OSM_BD", "attribution": "© OpenStreetMap contributors (ODbL)" }
+    ],
+    "routes": [
+      { "id": "bus-da-ctg", "originDistrict": "Dhaka", "destinationDistrict": "Chattogram", "distanceKm": 248, "typicalDurationMin": 330, "via": ["Cumilla", "Feni"], "operators": ["BRTC", "GREENLINE", "HANIF"], "sourceId": "SRC_BRTA_OFFICIAL" },
+      { "id": "bus-da-bsl", "originDistrict": "Dhaka", "destinationDistrict": "Barishal", "distanceKm": 172, "typicalDurationMin": 210, "via": ["Padma Bridge", "Bhanga"], "operators": ["BRTC", "HANIF"], "brtcETicketPilot": true, "sourceId": "SRC_BRTC_OFFICIAL" },
+      { "id": "bus-da-syl", "originDistrict": "Dhaka", "destinationDistrict": "Sylhet", "distanceKm": 240, "typicalDurationMin": 340, "via": ["Bhairab", "Shaistaganj"], "operators": ["GREENLINE", "HANIF"], "sourceId": "SRC_BRTA_OFFICIAL" }
+    ],
+    "cityRoutes": [
+      { "city": "Dhaka", "routeNo": "DN-01", "nameBn": "উত্তরা – মতিঝিল (বিআরটিসি/নগর পরিবহন)", "nameEn": "Uttara – Motijheel (Dhaka Nagar Paribahan)", "stops": ["Uttara", "Airport", "Mohakhali", "Farmgate", "Shahbagh", "Motijheel"], "sourceId": "SRC_BRTC_OFFICIAL" },
+      { "city": "Chattogram", "routeNo": "CTG-04", "nameBn": "নিউ মার্কেট – পতেঙ্গা", "nameEn": "New Market – Patenga", "stops": ["New Market", "Agrabad", "EPZ", "Patenga"], "sourceId": "SRC_OSM_BD" }
+    ]
+  },
+  "water": {
+    "sourceId": "SRC_BIWTA_BIWTC",
+    "lastVerifiedAt": "2026-11-05T00:00:00Z",
+    "ghats": [
+      { "code": "SADARGHAT", "nameBn": "সদরঘাট লঞ্চ টার্মিনাল (ঢাকা)", "nameEn": "Sadarghat Launch Terminal (Dhaka)", "districtEn": "Dhaka", "lat": 23.7061, "lng": 90.4097, "sourceId": "SRC_BIWTA_BIWTC" },
+      { "code": "BARISHAL_GHAT", "nameBn": "বরিশাল নদীবন্দর", "nameEn": "Barishal River Port", "districtEn": "Barishal", "lat": 22.7010, "lng": 90.3712, "sourceId": "SRC_BIWTA_BIWTC" },
+      { "code": "PATURIA_GHAT", "nameBn": "পাটুরিয়া ফেরিঘাট", "nameEn": "Paturia Ferry Ghat", "districtEn": "Manikganj", "lat": 23.7764, "lng": 89.7825, "sourceId": "SRC_BIWTA_BIWTC" }
+    ],
+    "routes": [
+      { "id": "water-da-bsl", "type": "launch", "originGhat": "SADARGHAT", "destinationGhat": "BARISHAL_GHAT", "nameBn": "ঢাকা (সদরঘাট) – বরিশাল লঞ্চ", "nameEn": "Dhaka (Sadarghat) – Barishal Launch", "typicalDurationMin": 450, "weatherWarningCheckUrl": "https://bmd.gov.bd", "sourceId": "SRC_BIWTA_BIWTC" },
+      { "id": "water-paturia-daulatdia", "type": "ferry", "originGhat": "PATURIA_GHAT", "destinationGhat": "DAULATDIA_GHAT", "nameBn": "পাটুরিয়া – দৌলতদিয়া ফেরি পারাপার", "nameEn": "Paturia – Daulatdia Ferry Crossing (BIWTC)", "typicalDurationMin": 45, "weatherWarningCheckUrl": "https://biwtc.gov.bd", "sourceId": "SRC_BIWTA_BIWTC" }
+    ]
+  },
+  "air": {
+    "sourceId": "SRC_CAAB_AIR",
+    "lastVerifiedAt": "2026-11-01T00:00:00Z",
+    "routes": [
+      { "id": "air-dac-cgp", "originIata": "DAC", "destinationIata": "CGP", "nameBn": "ঢাকা (HSIA) – চট্টগ্রাম (শাহ আমানত)", "nameEn": "Dhaka (DAC) – Chattogram (CGP)", "flightMin": 50, "officialAirlines": ["https://www.biman-airlines.com", "https://usbair.com", "https://www.flynovoair.com"], "sourceId": "SRC_CAAB_AIR" },
+      { "id": "air-dac-cxb", "originIata": "DAC", "destinationIata": "CXB", "nameBn": "ঢাকা (DAC) – কক্সবাজার (CXB)", "nameEn": "Dhaka (DAC) – Cox's Bazar (CXB)", "flightMin": 65, "officialAirlines": ["https://www.biman-airlines.com", "https://usbair.com"], "sourceId": "SRC_CAAB_AIR" },
+      { "id": "air-dac-zyl", "originIata": "DAC", "destinationIata": "ZYL", "nameBn": "ঢাকা (DAC) – সিলেট (ওসমানী)", "nameEn": "Dhaka (DAC) – Sylhet (ZYL)", "flightMin": 45, "officialAirlines": ["https://www.biman-airlines.com", "https://usbair.com"], "sourceId": "SRC_CAAB_AIR" }
+    ]
+  }
+}

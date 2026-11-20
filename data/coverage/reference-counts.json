@@ -1,0 +1,21 @@
+{
+  "asOf": "2026-11-20",
+  "sourceId": "SRC_HDX_COD_AB_BGD",
+  "note": "Reference counts loaded strictly as data (Coverage Rule C4). Never hard-code in application logic or tests.",
+  "counts": {
+    "divisions": 8,
+    "districts": 64,
+    "upazilasExpectedBaseline": 495,
+    "upazilasWithMay2026Approvals": 500,
+    "cityCorporations": 13,
+    "pourashavasApprox": 330,
+    "unionsApprox": 4571,
+    "thanasApprox": 640,
+    "railStationsApprox": 483,
+    "mrtLine6OperationalStations": 16,
+    "serviceTaxonomyCategories": 18,
+    "lifeEventBundlesMinimum": 40,
+    "socialProtectionProgrammesFy27": 90,
+    "mygovDigitizedServicesApprox": 1800
+  }
+}

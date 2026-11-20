@@ -16,7 +16,9 @@ build/
 .expo/
 .turbo/
 out/
-coverage/
+/coverage/
+apps/*/coverage/
+packages/*/coverage/
 *.tsbuildinfo
 
 # Environment & secrets (NEVER commit real secrets)
