@@ -9,7 +9,7 @@
     "pnpm": ">=9.0.0"
   },
   "scripts": {
-    "postinstall": "pnpm --filter @jonoshheba/api db:generate",
+    "postinstall": "node -e \"if (require('fs').existsSync('apps/api/prisma/schema.prisma')) require('child_process').execSync('pnpm --filter @jonoshheba/api db:generate', { stdio: 'inherit' })\"",
     "dev": "turbo run dev --concurrency=12",
     "build": "turbo run build",
     "lint": "turbo run lint",
