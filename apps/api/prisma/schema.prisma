@@ -1687,6 +1687,72 @@ model PromptVersion {
 // 8. ADMIN SCHEMA (Ops, Feature Flags, Provider Health)
 // =============================================================================
 
+/// Admin user (owner + staff). Separate from citizen User model.
+model AdminUser {
+  id             String          @id @default(uuid(7)) @db.Uuid
+  email          String          @unique @db.VarChar(254)
+  passwordHash   String          @db.VarChar(256)
+  totpSecret     String?         @map("totp_secret") @db.VarChar(256)
+  totpEnabled    Boolean         @default(false) @map("totp_enabled")
+  passkeyEnabled Boolean         @default(false) @map("passkey_enabled")
+  role           String          @default("owner") @db.VarChar(32)
+  status         String          @default("active") @db.VarChar(32)
+  failedAttempts Int             @default(0) @map("failed_attempts")
+  lockedUntil    DateTime?       @map("locked_until") @db.Timestamptz(6)
+  lastLoginAt    DateTime?       @map("last_login_at") @db.Timestamptz(6)
+  ipAllowlist    String[]        @map("ip_allowlist") @db.VarChar(45)
+  recoveryCodes  String[]        @map("recovery_codes") @db.VarChar(128)
+  createdAt      DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  sessions  AdminSession[]
+  auditLogs AdminAuditLog[]
+
+  @@map("admin_users")
+  @@schema("admin")
+}
+
+/// Admin session tokens (separate from citizen sessions).
+model AdminSession {
+  id            String    @id @default(uuid(7)) @db.Uuid
+  adminUserId   String    @map("admin_user_id") @db.Uuid
+  tokenHash     String    @unique @map("token_hash") @db.VarChar(128)
+  ipHash        String?   @map("ip_hash") @db.VarChar(64)
+  userAgent     String?   @map("user_agent") @db.VarChar(512)
+  mfaVerified   Boolean   @default(false) @map("mfa_verified")
+  reauthedAt    DateTime? @map("reauthed_at") @db.Timestamptz(6)
+  expiresAt     DateTime  @map("expires_at") @db.Timestamptz(6)
+  idleExpiresAt DateTime  @map("idle_expires_at") @db.Timestamptz(6)
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user AdminUser @relation(fields: [adminUserId], references: [id])
+
+  @@index([adminUserId, createdAt])
+  @@index([expiresAt])
+  @@map("admin_sessions")
+  @@schema("admin")
+}
+
+/// Append-only admin action audit log.
+model AdminAuditLog {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  adminUserId String    @map("admin_user_id") @db.Uuid
+  action      String    @db.VarChar(100)
+  targetType  String?   @map("target_type") @db.VarChar(64)
+  targetId    String?   @map("target_id")
+  ipHash      String?   @map("ip_hash") @db.VarChar(64)
+  before      Json?
+  after       Json?
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user AdminUser @relation(fields: [adminUserId], references: [id])
+
+  @@index([adminUserId, createdAt])
+  @@index([createdAt])
+  @@map("admin_audit_logs")
+  @@schema("admin")
+}
+
 model FeatureFlag {
   id          String   @id @default(uuid(7)) @db.Uuid
   key         String   @unique @db.VarChar(80)

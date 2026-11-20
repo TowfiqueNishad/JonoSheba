@@ -12,6 +12,7 @@ import { GoogleOAuthAdapter, NationalDigitalIdStubAdapter } from './adapters/oau
 import { PrismaIdentityRepository } from './adapters/prisma-identity.repository';
 import { ConsoleSmsAdapter } from './adapters/sms.adapters';
 import { CloudflareTurnstileAdapter } from './adapters/turnstile.adapter';
+import { ResendEmailAdapter } from './adapters/email.adapter';
 import { AuthService } from './application/auth.service';
 import { MeService } from './application/me.service';
 import { AuthController } from './controllers/auth.controller';
@@ -25,6 +26,7 @@ import { IDENTITY_REPOSITORY_PORT } from './ports/identity.repository.port';
 import { OAUTH_PROVIDERS_PORT } from './ports/oauth.port';
 import { SMS_PORT } from './ports/sms.port';
 import { TURNSTILE_PORT } from './ports/turnstile.port';
+import { EMAIL_PORT } from './ports/email.port';
 
 @Global()
 @Module({
@@ -44,13 +46,14 @@ import { TURNSTILE_PORT } from './ports/turnstile.port';
     CloudflareTurnstileAdapter,
     GoogleOAuthAdapter,
     NationalDigitalIdStubAdapter,
+    ResendEmailAdapter,
     SlidingWindowRateLimiter,
     InMemoryAuditLogWriter,
     AuditLogInterceptor,
     {
       provide: IDENTITY_REPOSITORY_PORT,
       useFactory: (inMem: InMemoryIdentityRepository, prisma: PrismaService) => {
-        if (process.env.IDENTITY_STORAGE === 'prisma') {
+        if (process.env['IDENTITY_STORAGE'] === 'prisma') {
           return new PrismaIdentityRepository(prisma);
         }
         return inMem;
@@ -61,6 +64,7 @@ import { TURNSTILE_PORT } from './ports/turnstile.port';
     { provide: TURNSTILE_PORT, useExisting: CloudflareTurnstileAdapter },
     { provide: RATE_LIMITER_PORT, useExisting: SlidingWindowRateLimiter },
     { provide: AUDIT_LOG_WRITER_PORT, useExisting: InMemoryAuditLogWriter },
+    { provide: EMAIL_PORT, useExisting: ResendEmailAdapter },
     {
       provide: OAUTH_PROVIDERS_PORT,
       useFactory: (google: GoogleOAuthAdapter, nid: NationalDigitalIdStubAdapter) => [google, nid],
@@ -78,6 +82,7 @@ import { TURNSTILE_PORT } from './ports/turnstile.port';
     AUDIT_LOG_WRITER_PORT,
     RATE_LIMITER_PORT,
     SMS_PORT,
+    EMAIL_PORT,
   ],
 })
 export class IdentityModule {}
