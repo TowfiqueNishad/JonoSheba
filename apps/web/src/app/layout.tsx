@@ -69,14 +69,14 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       data-theme="night"
       data-csp-nonce={nonce ? 'enabled' : 'none'}
     >
-      <body className="nostos-body flex min-h-screen flex-col">
+      <body className="nostos-body flex min-h-screen flex-col max-w-full overflow-x-hidden">
         <ThemeProvider>
           <LocaleProvider initialLocale={locale}>
             <AuthProvider>
               <FilmGrainOverlay />
               <CustomCursorRing />
               <AppHeader />
-              <main id="main-content" tabIndex={-1} className="relative z-10 flex-1">
+              <main id="main-content" tabIndex={-1} className="relative z-10 flex-1 max-w-full overflow-x-hidden">
                 {children}
               </main>
               <AppFooter />

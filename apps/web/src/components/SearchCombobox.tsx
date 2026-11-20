@@ -269,7 +269,7 @@ export function SearchCombobox({
   const isHeader = variant === 'header';
 
   return (
-    <div ref={containerRef} className={`relative ${isHeader ? 'w-48 lg:w-64' : 'w-full'}`}>
+    <div ref={containerRef} className={`relative ${isHeader ? 'w-36 lg:w-48' : 'w-full'}`}>
       <form
         onSubmit={(e) => {
           e.preventDefault();

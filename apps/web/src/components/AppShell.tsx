@@ -153,17 +153,16 @@ export function AppHeader() {
   }, [isHomePage]);
 
   const primaryNav = [
-    { href: '/', label: dict.nav.home },
     { href: '/services', label: dict.nav.services },
     { href: '/transport', label: dict.nav.transport },
     { href: '/benefits', label: dict.nav.benefits },
-    { href: '/ministries', label: locale === 'bn' ? 'মন্ত্রণালয়' : 'Ministries' },
-    { href: '/education', label: locale === 'bn' ? 'শিক্ষা' : 'Education' },
     { href: '/jono', label: dict.nav.jono },
-    { href: '/emergency', label: dict.nav.emergency },
   ];
 
   const moreNav = [
+    { href: '/ministries', label: locale === 'bn' ? 'মন্ত্রণালয়' : 'Ministries' },
+    { href: '/education', label: locale === 'bn' ? 'শিক্ষা' : 'Education' },
+    { href: '/emergency', label: dict.nav.emergency },
     { href: '/hotlines', label: locale === 'bn' ? 'সকল হটলাইন' : 'Hotline Directory' },
     { href: '/life-events', label: dict.nav.lifeEvents },
     { href: '/scholarships', label: dict.nav.scholarships },
@@ -199,7 +198,7 @@ export function AppHeader() {
         </div>
       )}
 
-      <header className="sticky top-0 z-40 border-b border-[var(--hair)] bg-[var(--panel)] backdrop-blur-md">
+      <header className="sticky top-0 z-40 w-full max-w-full overflow-x-clip border-b border-[var(--hair)] bg-[var(--panel)] backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2 sm:gap-3 sm:px-5 sm:py-2.5">
           {/* Left: Solid #B3261E 999 Pill + NOSTOS Wordmark ("জনসেবা" wide Anek Bangla + "JONOSHHEBA" tracked 9px steel-blue) */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
