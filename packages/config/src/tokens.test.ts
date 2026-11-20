@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { colors, spacing, typography } from './tokens';
+import { colors, nostosThemes, spacing, typography } from './tokens';
 
 function hexToRgb(hex: string): [number, number, number] {
   const clean = hex.replace('#', '');
@@ -25,23 +25,41 @@ function contrastRatio(fg: string, bg: string): number {
 }
 
 describe('Design Tokens (WCAG AA & Bangla typography)', () => {
-  it('meets WCAG AA (>= 4.5:1) for primary brand and semantic text colors on white', () => {
-    const white = colors.surface.background;
-    expect(contrastRatio(colors.brand.primary, white)).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio(colors.brand.secondary, white)).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio(colors.text.primary, white)).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio(colors.text.secondary, white)).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio(colors.text.muted, white)).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio(colors.semantic.success, white)).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio(colors.semantic.danger, white)).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio(colors.semantic.info, white)).toBeGreaterThanOrEqual(4.5);
-    expect(contrastRatio(colors.semantic.warning, colors.semantic.warningSoft)).toBeGreaterThanOrEqual(4.5);
+  it('meets WCAG AA (>= 4.5:1) for NOSTOS night & day text, accents, and 999 emergency button', () => {
+    const { night, day } = nostosThemes;
+
+    // Night ("Steel & Gold") theme contrast on page/surface
+    expect(contrastRatio(night.text, night.page)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(night.textMuted, night.page)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(night.heroText, night.page)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(night.accent, night.page)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(night.gold, night.page)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(night.emergencyText, night.emergencyRed)).toBeGreaterThanOrEqual(4.5);
+
+    // Day ("Bleached Light") theme contrast on page/surface
+    expect(contrastRatio(day.text, day.page)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(day.textMuted, day.page)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(day.heroText, day.page)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(day.accent, day.page)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(day.gold, day.surface)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(day.emergencyText, day.emergencyRed)).toBeGreaterThanOrEqual(4.5);
+
+    // Core dark surface tokens
+    const bg = colors.surface.background;
+    expect(contrastRatio(colors.brand.primary, bg)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(colors.text.primary, bg)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(colors.text.secondary, bg)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(colors.text.muted, bg)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(colors.semantic.success, bg)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(colors.semantic.info, bg)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(colors.semantic.warning, bg)).toBeGreaterThanOrEqual(4.5);
   });
 
   it('includes Bangla-first fonts and >= 1.6 line-height', () => {
-    expect(typography.fontFamily.sans).toContain('Noto Sans Bengali');
-    expect(typography.fontFamily.sans).toContain('Hind Siliguri');
-    expect(typography.fontFamily.sans).toContain('Inter');
+    expect(typography.fontFamily.bangla).toContain('Anek Bangla');
+    expect(typography.fontFamily.bangla).toContain('Noto Sans Bengali');
+    expect(typography.fontFamily.sans).toContain('Anek Bangla');
+    expect(typography.fontFamily.sans).toContain('Montserrat');
     expect(typography.lineHeight.normal).toBeGreaterThanOrEqual(1.6);
   });
 

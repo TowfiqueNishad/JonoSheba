@@ -9,7 +9,6 @@
  */
 import { Injectable } from '@nestjs/common';
 import { CasesService } from './application/cases.service';
-import { EmergencyHealthUtilityService } from './application/emergency-health-utility.service';
 import type { CitizenCaseRecord } from './domain/support.types';
 
 export { CasesService } from './application/cases.service';
